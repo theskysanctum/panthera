@@ -61,7 +61,9 @@ _BUTTON_MAPPING: Final = {
     'joystick2left': 'rstick_left',
     'joystick2down': 'rstick_down',
     'joystick2right': 'rstick_right',
-    'hotkey': 'menu_button',
+    # "hotkey" is deliberately absent: fs-uae's own "menu_button" action opens its built-in GUI
+    # menu on a single press, with no modifier - mapping it would let that single press fight
+    # with the universal pause (batocera-pause), which reserves the same physical button.
 }
 _HAT_MAPPING: Final = {'1': 'up', '4': 'down', '2': 'right', '8': 'left'}
 _REVERSE_AXIS_MAPPING: Final = {
