@@ -7,7 +7,7 @@
 # with a kiosk session layered on as ordinary RPM packages + a systemd unit
 # - no custom kernel, no custom rootfs build, nothing Buildroot-specific.
 #
-# Structured for Bootc Studio (github.com/theskysanctum/bootc-studio): the
+# Structured for OS Studio (github.com/theskysanctum/os-studio): the
 # four >>>/<<< marked blocks below are read and rewritten wholesale by its
 # Packages tab, so open this directory there to add/remove dnf packages,
 # COPR repos, Flatpaks or AppMan apps without hand-editing this file -
@@ -34,11 +34,11 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-brave-core
 REPO
 EOF
 
-# >>> bootc-studio:copr-repos >>>
+# >>> os-studio:copr-repos >>>
 # (no COPR repos enabled yet - add some from the Packages tab)
-# <<< bootc-studio:copr-repos <<<
+# <<< os-studio:copr-repos <<<
 
-# >>> bootc-studio:dnf-packages >>>
+# >>> os-studio:dnf-packages >>>
 RUN --mount=type=cache,target=/var/cache/libdnf5,sharing=locked dnf install -y --setopt=keepcache=1 \
     brave-browser \
     liberation-fonts \
@@ -52,15 +52,15 @@ RUN --mount=type=cache,target=/var/cache/libdnf5,sharing=locked dnf install -y -
     xorg-x11-xauth \
     xorg-x11-xinit \
     xrandr
-# <<< bootc-studio:dnf-packages <<<
+# <<< os-studio:dnf-packages <<<
 
-# >>> bootc-studio:flatpak-apps >>>
+# >>> os-studio:flatpak-apps >>>
 # (Flatpak/Flathub support not enabled - use the Packages tab)
-# <<< bootc-studio:flatpak-apps <<<
+# <<< os-studio:flatpak-apps <<<
 
-# >>> bootc-studio:appman-apps >>>
+# >>> os-studio:appman-apps >>>
 # (AppMan/AM support not enabled - use the Packages tab)
-# <<< bootc-studio:appman-apps <<<
+# <<< os-studio:appman-apps <<<
 
 # Chromium (and GUI apps generally) refuse their own sandbox when running
 # as root, so the kiosk session runs as a real non-root user rather than

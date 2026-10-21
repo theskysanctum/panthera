@@ -11,9 +11,9 @@ doesn't produce or consume it. Use it when you want this kiosk session as
 its own bootable appliance (e.g. flashed to a drive and run directly on
 hardware), not as a `.capp` shortcut inside Panthera.
 
-## Editing with Bootc Studio
+## Editing with OS Studio
 
-This Containerfile is structured for [Bootc Studio](https://github.com/theskysanctum/bootc-studio):
+This Containerfile is structured for [OS Studio](https://github.com/theskysanctum/os-studio):
 open this directory there and its Packages tab can add/remove dnf
 packages, COPR repos, Flatpaks or AppMan apps without hand-editing the
 file - everything else here (the brave repo bootstrap, user/systemd
