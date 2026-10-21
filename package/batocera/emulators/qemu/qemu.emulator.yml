@@ -39,16 +39,12 @@ custom_features:
       VirtIO GPU: virtio
       QXL (SPICE): qxl
       Cirrus: cirrus
-  qemu_boot:
-    prompt: BOOT FROM
-    description: Boot the disk image directly, or the attached ISO (e.g. to install an OS onto the disk image).
-    choices:
-      Disk image (Default): disk
-      CD-ROM / ISO: cdrom
-file_extensions:
-  - qcow2
-  - img
-  - raw
-  - iso
 systems:
-  - other
+  - name: os_install
+    file_extensions:
+      - iso
+  - name: os_hdds
+    file_extensions:
+      - qcow2
+      - img
+      - raw

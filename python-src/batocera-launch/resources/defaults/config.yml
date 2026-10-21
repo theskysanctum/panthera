@@ -511,7 +511,10 @@ openjazz:
 oricatmos:
   emulator: libretro
   core:     mame
-other:
+os_hdds:
+  emulator: qemu
+  core:     qemu
+os_install:
   emulator: qemu
   core:     qemu
 

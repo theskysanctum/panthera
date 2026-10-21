@@ -26,12 +26,14 @@ from typing import Final
 
 from batocera_common.asyncio import run
 from batocera_common.dataclasses import cached_dataclass, cached_property
+from batocera_common.paths import ROMS
 from batocera_launch import Command, Emulator, HotkeysContext
 
 _QEMU_BIN: Final = Path('/usr/bin/qemu-system-x86_64')
 _QEMU_IMG_BIN: Final = Path('/usr/bin/qemu-img')
 _KVM_DEVICE: Final = Path('/dev/kvm')
 
+_INSTALLED_DISKS_DIR: Final = ROMS / 'os_hdds'
 _DISK_SIZE: Final = '32G'
 _RAW_EXTENSIONS: Final = {'.img', '.raw'}
 
@@ -76,17 +78,16 @@ class Qemu(Emulator):
         if accel == 'kvm':
             args.append('-enable-kvm')
 
-        if self.rom.suffix.lower() == '.iso':
-            disk = self.saves_dir / f'{self.rom.stem}.qcow2'
+        if self.system == 'os_install':
+            disk = _INSTALLED_DISKS_DIR / f'{self.rom.stem}.qcow2'
             if not disk.exists():
                 disk.parent.mkdir(parents=True, exist_ok=True)
                 await run(_QEMU_IMG_BIN, 'create', '-f', 'qcow2', disk, _DISK_SIZE)
 
-            boot_order = 'd' if self.config.get_str('qemu_boot', 'disk') == 'cdrom' else 'c'
             args += [
                 '-cdrom', self.rom,
                 '-drive', f'file={disk},if=virtio,format=qcow2',
-                '-boot', f'order={boot_order}',
+                '-boot', 'order=d',
             ]
         else:
             disk_format = 'raw' if self.rom.suffix.lower() in _RAW_EXTENSIONS else 'qcow2'

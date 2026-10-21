@@ -1902,31 +1902,60 @@ ports:
      Aqui você pode encontrar jogos e aplicativos para Linux, iniciados via scripts shell que terminam em
      ".sh". Apenas os scripts ".sh" aparecem no EmulationStation.
 
-other:
-  name:       Other Environments
+os_install:
+  name:       Install Other OS
   manufacturer: Various
   release:
   hardware: computer
-  file_extensions: [qcow2, img, raw, iso]
+  file_extensions: [iso]
   platform: pc
+  group:      other_environments
   comment_en: |
-    ## OTHER ENVIRONMENTS ##
+    ## OTHER ENVIRONMENTS : INSTALL ##
     -------------------------------------------------------------------------------
-    Full-system virtual machines, run via QEMU. Use this for other operating
-    systems and legacy software with no native or emulated path elsewhere:
-    boot a disk image (qcow2/img/raw) directly, or an ISO to install one.
+    Drop an installer ISO here to install another operating system via QEMU.
+    A virtual hard disk is created automatically and shows up in "Virtual
+    Hard Disks" (os_hdds) once the install is done, ready to boot directly.
   comment_fr: |
-    ## AUTRES ENVIRONNEMENTS ##
+    ## AUTRES ENVIRONNEMENTS : INSTALLATION ##
     -------------------------------------------------------------------------------
-    Machines virtuelles complètes, lancées via QEMU. À utiliser pour d'autres
-    systèmes d'exploitation et logiciels sans chemin natif ou émulé ailleurs :
-    démarrez une image disque (qcow2/img/raw), ou un ISO pour en installer une.
+    Placez ici un ISO d'installation pour installer un autre système
+    d'exploitation via QEMU. Un disque dur virtuel est créé automatiquement
+    et apparaît dans "Disques Durs Virtuels" (os_hdds) une fois l'installation
+    terminée, prêt à démarrer directement.
   comment_br: |
-    ## OUTROS AMBIENTES ##
+    ## OUTROS AMBIENTES : INSTALAÇÃO ##
     -------------------------------------------------------------------------------
-    Máquinas virtuais completas, executadas via QEMU. Use para outros sistemas
-    operacionais e softwares sem caminho nativo ou emulado em outro lugar:
-    inicie uma imagem de disco (qcow2/img/raw), ou um ISO para instalar uma.
+    Coloque aqui um ISO de instalação para instalar outro sistema operacional
+    via QEMU. Um disco rígido virtual é criado automaticamente e aparece em
+    "Discos Rígidos Virtuais" (os_hdds) após a instalação, pronto para iniciar.
+
+os_hdds:
+  name:       Virtual Hard Disks
+  manufacturer: Various
+  release:
+  hardware: computer
+  file_extensions: [qcow2, img, raw]
+  platform: pc
+  group:      other_environments
+  comment_en: |
+    ## OTHER ENVIRONMENTS : VIRTUAL HARD DISKS ##
+    -------------------------------------------------------------------------------
+    Virtual hard disks (qcow2/img/raw), booted directly via QEMU. This is
+    where installs from "Install Other OS" (os_install) end up; you can
+    also drop pre-made disk images here directly.
+  comment_fr: |
+    ## AUTRES ENVIRONNEMENTS : DISQUES DURS VIRTUELS ##
+    -------------------------------------------------------------------------------
+    Disques durs virtuels (qcow2/img/raw), démarrés directement via QEMU.
+    C'est ici que se retrouvent les installations depuis "Installation"
+    (os_install) ; vous pouvez aussi y déposer directement des images disque.
+  comment_br: |
+    ## OUTROS AMBIENTES : DISCOS RÍGIDOS VIRTUAIS ##
+    -------------------------------------------------------------------------------
+    Discos rígidos virtuais (qcow2/img/raw), iniciados diretamente via QEMU.
+    É aqui que as instalações feitas em "Instalação" (os_install) terminam;
+    você também pode colocar imagens de disco prontas aqui diretamente.
 
 halflife:
   name: Half-Life 1
