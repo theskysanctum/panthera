@@ -105,7 +105,12 @@ class Emulator(AbstractAsyncContextManager['Emulator', bool | None], ABC):
     # Default for the cpucluster setting: 'all', or 'fast' for emulators bound by one core.
     cpu_cluster: ClassVar[str] = 'all'
     needs_sdl_controller_db: ClassVar[bool] = False  # Override sdl_controller_db_path to write to a different path
-    sdl_game_controller_config_ignore_buttons: ClassVar[Container[str] | None] = None
+    # "hotkey" is excluded by default so no SDL-based emulator's own guide-button handling can
+    # fight with the universal pause (see batocera-pause, which reads the real BTN_MODE directly
+    # and independently of this SDL_GAMECONTROLLERCONFIG layer) - override back to None for an
+    # emulator that genuinely needs it (the VM system doesn't opt into SDL_GAMECONTROLLERCONFIG
+    # at all, so it was never affected by this either way).
+    sdl_game_controller_config_ignore_buttons: ClassVar[Container[str] | None] = ('hotkey',)
 
     config: SystemConfig
     profiler: Profiler = field(repr=False)

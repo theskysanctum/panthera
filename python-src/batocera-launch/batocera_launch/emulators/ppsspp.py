@@ -207,7 +207,6 @@ def _generate_controller_config(controls_ini: Path, controls_init: Path, control
 @cached_dataclass
 class PPSSPP(Emulator):
     needs_sdl_game_controller_config = True
-    sdl_game_controller_config_ignore_buttons = ('hotkey',)
 
     @cached_property
     def hotkeygen_context(self) -> HotkeysContext:
