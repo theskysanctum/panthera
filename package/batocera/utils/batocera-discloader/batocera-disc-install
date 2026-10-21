@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Entry point the disc-insert udev rule runs (see 99-disc-insert.rules). Mounts the disc and
+handles the common case - a single game (or a single multi-disc .m3u) sitting right at the
+disc's root - by installing it straight away, no interaction needed.
+
+If the root isn't a leaf (play.txt missing there) it's a browsable collection instead: this
+deliberately does NOT try to guess which sub-entry the user wants. It leaves the disc mounted
+and drops an ES toast pointing at the disc picker port instead, where disc_content.browse()'s
+folder/m3u/single-game classification is the same but a human actually chooses.
+"""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import disc_content  # noqa: E402
+import es_notify  # noqa: E402
+
+
+def main():
+    device = sys.argv[1] if len(sys.argv) > 1 else disc_content.DEVICE_NODE
+    folder = disc_content.mount_disc(device)
+    if folder is None:
+        return
+
+    entries = disc_content.browse(folder)
+    if len(entries) == 1 and entries[0].kind == "game":
+        entry = entries[0]
+        ok, message = disc_content.install_game(entry, disc_content.roms_dir_for_system(entry.system))
+        if ok:
+            es_notify.reload_games()
+        es_notify.notify(message)
+        return
+
+    if entries:
+        es_notify.notify("Disc has more than one game - open Disc Picker to choose what to install.")
+    else:
+        es_notify.notify("Disc inserted, but nothing playable was found on it.")
+
+
+if __name__ == "__main__":
+    main()

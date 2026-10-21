@@ -1,0 +1,8 @@
+config BR2_PACKAGE_BATOCERA_DISCLOADER
+	bool "batocera-discloader"
+	select BR2_PACKAGE_PYTHON3
+	help
+	  Install a game straight off a physical disc: on insert, mounts it, reads its
+	  play.txt/.m3u convention to find the one game at its root, and copies it into the
+	  right system's roms folder. Discs with more than one game on them are left mounted
+	  for the disc picker (batocera-disc-picker) instead of being guessed at.

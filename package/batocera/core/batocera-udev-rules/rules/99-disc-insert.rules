@@ -1,0 +1,18 @@
+# Physical optical disc inserted/changed in the first CD/DVD-ROM drive - hands off to
+# batocera-disc-install, which mounts it, classifies what's on it via a play.txt/.m3u
+# convention, and installs the resolved game into /userdata/roms/<system>. ACTION=="change" +
+# ID_CDROM_MEDIA=="1" is the standard kernel/udev signal that a disc is now actually present and
+# readable - "add" alone fires for an empty drive too (the device node itself appearing at
+# boot/hotplug), long before any media is in it.
+#
+# The stock 60-cdrom_id.rules (shipped by eudev itself, runs before this one purely by filename
+# order) already populates ID_CDROM_MEDIA on a real build, but this rule calls cdrom_id itself too
+# rather than relying on that - harmless if it already ran (cdrom_id is safe to call again), and
+# this rule still works standing alone if that one's ever missing/reordered. Device permissions
+# aren't a separate concern here: RUN+= and IMPORT{program} both run as the udev worker, i.e. as
+# root, which can always open /dev/sr0 regardless of its own mode/group bits.
+#
+# RUN+= must return immediately (udev itself blocks the whole event queue on every rule's RUN+=
+# until it exits), so this backgrounds the real work with setsid -f the same way 99-pedals.rules
+# already does for evsieve, rather than running batocera-disc-install inline.
+SUBSYSTEM=="block", KERNEL=="sr[0-9]*", ACTION=="change", IMPORT{program}="cdrom_id --lock-media $devnode", ENV{ID_CDROM_MEDIA}=="1", RUN+="/usr/bin/setsid -f /usr/bin/batocera-disc-install $env{DEVNAME}"
