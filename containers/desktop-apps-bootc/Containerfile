@@ -6,11 +6,21 @@
 # "The OS is in userland" here just means this is a stock Fedora bootc base
 # with a kiosk session layered on as ordinary RPM packages + a systemd unit
 # - no custom kernel, no custom rootfs build, nothing Buildroot-specific.
+#
+# Structured for Bootc Studio (github.com/theskysanctum/bootc-studio): the
+# four >>>/<<< marked blocks below are read and rewritten wholesale by its
+# Packages tab, so open this directory there to add/remove dnf packages,
+# COPR repos, Flatpaks or AppMan apps without hand-editing this file -
+# everything outside those blocks (this comment, the brave repo bootstrap,
+# the user/systemd setup below) is left untouched either way.
 FROM quay.io/fedora/fedora-bootc:42
 
 ARG KIOSK_CMD="/usr/bin/brave-browser --kiosk https://example.com"
 
-# Brave's own repo, since Fedora doesn't package it.
+# Brave's own repo, since Fedora doesn't package it - not a COPR, so this
+# can't live in the copr-repos block below; it has to run before the
+# dnf-packages block instead, since that's what actually installs
+# brave-browser from it.
 RUN <<EOF
 curl -fsSL https://brave-browser-rpm-release.s3.brave.com/brave-core.asc \
     -o /etc/pki/rpm-gpg/RPM-GPG-KEY-brave-core
@@ -24,22 +34,33 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-brave-core
 REPO
 EOF
 
-RUN <<EOF
-dnf install -y \
+# >>> bootc-studio:copr-repos >>>
+# (no COPR repos enabled yet - add some from the Packages tab)
+# <<< bootc-studio:copr-repos <<<
+
+# >>> bootc-studio:dnf-packages >>>
+RUN --mount=type=cache,target=/var/cache/libdnf5,sharing=locked dnf install -y --setopt=keepcache=1 \
     brave-browser \
-    openbox \
-    picom \
-    xorg-x11-server-Xorg \
-    xorg-x11-xinit \
-    xorg-x11-xauth \
-    xrandr \
+    liberation-fonts \
     mesa-dri-drivers \
     mesa-vulkan-drivers \
-    liberation-fonts \
+    openbox \
+    picom \
     pipewire-pulseaudio \
-    sudo
-dnf clean all
-EOF
+    sudo \
+    xorg-x11-server-Xorg \
+    xorg-x11-xauth \
+    xorg-x11-xinit \
+    xrandr
+# <<< bootc-studio:dnf-packages <<<
+
+# >>> bootc-studio:flatpak-apps >>>
+# (Flatpak/Flathub support not enabled - use the Packages tab)
+# <<< bootc-studio:flatpak-apps <<<
+
+# >>> bootc-studio:appman-apps >>>
+# (AppMan/AM support not enabled - use the Packages tab)
+# <<< bootc-studio:appman-apps <<<
 
 # Chromium (and GUI apps generally) refuse their own sandbox when running
 # as root, so the kiosk session runs as a real non-root user rather than
@@ -50,14 +71,15 @@ EOF
 #
 # video/audio/input/render are sysusers.d-declared but not yet
 # materialized into /etc/group at build time (Fedora synthesizes them
-# virtually via nss-systemd until systemd-sysusers actually runs at boot),
-# so `usermod -aG` silently no-ops here - it resolves the group via NSS,
-# sees it "already exists", and never writes a real, editable line.
-# Appending the real line ourselves (same name+GID as the declared one)
-# sidesteps that; `files` is checked first in nsswitch.conf and merges
-# cleanly with the synthesized entry rather than conflicting with it. GIDs
-# are read from the sysusers.d declaration itself rather than hardcoded,
-# so this doesn't silently drift if a future base image renumbers them.
+# virtually via nss-systemd until systemd-sysusers actually runs for real
+# at boot), so `usermod -aG` silently no-ops here - it resolves the group
+# via NSS, sees it "already exists," and never writes a real, editable
+# line. Appending the real line ourselves (same name+GID as the declared
+# one) sidesteps that; `files` is checked first in nsswitch.conf and
+# merges cleanly with the synthesized entry rather than conflicting with
+# it. GIDs are read from the sysusers.d declaration itself rather than
+# hardcoded, so this doesn't silently drift if a future base image
+# renumbers them.
 RUN useradd -m -s /bin/bash kiosk && \
     for g in video audio input render; do \
         gid=$(grep -hoP "^g $g \K[0-9]+" /usr/lib/sysusers.d/*.conf | head -1); \
