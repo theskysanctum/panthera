@@ -141,32 +141,11 @@ ifeq ($(BR2_PACKAGE_BAUH),y)
   BATOCERA_DESKTOPAPPS_APPS    += flatpak-config.desktop
 endif
 
-# demul
-ifeq ($(BR2_PACKAGE_DEMUL),y)
-  BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-demul
-  BATOCERA_DESKTOPAPPS_APPS    += demul-config.desktop
-  BATOCERA_DESKTOPAPPS_ICONS   += demul.png
-endif
-
 # melonds
 ifeq ($(BR2_PACKAGE_MELONDS),y)
   BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-melonds
   BATOCERA_DESKTOPAPPS_APPS    += melonds-config.desktop
   BATOCERA_DESKTOPAPPS_ICONS   += melonds.png
-endif
-
-# xenia
-ifeq ($(BR2_PACKAGE_XENIA),y)
-  BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-xenia
-  BATOCERA_DESKTOPAPPS_APPS    += xenia-config.desktop
-  BATOCERA_DESKTOPAPPS_ICONS   += xenia.png
-endif
-
-# xenia-canary
-ifeq ($(BR2_PACKAGE_XENIA_CANARY),y)
-  BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-xenia-canary
-  BATOCERA_DESKTOPAPPS_APPS    += xenia-canary-config.desktop
-  BATOCERA_DESKTOPAPPS_ICONS   += xenia-canary.png
 endif
 
 # xenia-edge
@@ -188,11 +167,6 @@ ifeq ($(BR2_PACKAGE_SHADPS4),y)
   BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-shadps4
   BATOCERA_DESKTOPAPPS_APPS    += shadps4-config.desktop
   BATOCERA_DESKTOPAPPS_ICONS   += shadps4.png
-endif
-
-# linuxloader
-ifeq ($(BR2_PACKAGE_LINUXLOADER),y)
-  BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-linuxloader
 endif
 
 ## Context Menu Actions
@@ -219,18 +193,6 @@ ifeq ($(BR2_PACKAGE_YAD),y)
   # convert PS4 .pkg files into per-game .zar archives
   BATOCERA_DESKTOPAPPS_TOOLBOX += ps4.toolbox
   BATOCERA_DESKTOPAPPS_ACTIONS += ps4.toolbox.pkgtozar.desktop
-
-  # wine
-  ifeq ($(BR2_PACKAGE_WINE_TKG),y)
-    BATOCERA_DESKTOPAPPS_TOOLBOX += wine.toolbox
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.configit.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.wsquashfs.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.symlinkprefix.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.listprefix.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.folder2autorun.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.file2autorun.desktop
-    BATOCERA_DESKTOPAPPS_ACTIONS += wine.toolbox.extract.desktop
-  endif
 
   # opengoal
   # pack a built Jak game into a .squashfs that replaces its disc image

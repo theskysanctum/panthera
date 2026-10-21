@@ -109,9 +109,6 @@
     <windowRule identifier="clksignal">
       <action name="ToggleFullscreen" />
     </windowRule>
-    <windowRule identifier="steam_proton" title="Demul">
-      <action name="ToggleFullscreen" />
-    </windowRule>
     <windowRule identifier="x16emu" title="Commander X16" serverDecoration="no">
       <action name="ToggleFullscreen" />
     </windowRule>

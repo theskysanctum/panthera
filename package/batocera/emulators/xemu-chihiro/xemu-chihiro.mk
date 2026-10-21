@@ -96,7 +96,7 @@ define XEMU_CHIHIRO_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/share/xemu-chihiro/data
 	cp $(@D)/data/* $(TARGET_DIR)/usr/share/xemu-chihiro/data/
 	mkdir -p $(TARGET_DIR)/usr/share/xemu-chihiro/crosshairs
-	cp -f $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/emulators/linuxloader/crosshairs/*.png \
+	cp -f $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/emulators/xemu-chihiro/crosshairs/*.png \
 	    $(TARGET_DIR)/usr/share/xemu-chihiro/crosshairs/
 endef
 

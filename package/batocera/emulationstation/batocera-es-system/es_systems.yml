@@ -1902,34 +1902,6 @@ ports:
      Aqui você pode encontrar jogos e aplicativos para Linux, iniciados via scripts shell que terminam em
      ".sh". Apenas os scripts ".sh" aparecem no EmulationStation.
 
-windows:
-  name:       Windows
-  manufacturer: Microsoft
-  release: 1992
-  hardware: computer
-  platform:   windows
-  theme:      windows
-  comment_en: |
-    For more info: https://wiki.batocera.org/systems:windows
-  comment_fr: |
-    Trouvez la documentation ici: https://wiki.batocera.org/systems:windows
-  comment_br: |
-    Para mais informações: https://wiki.batocera.org/systems:windows
-
-windows_installers:
-  name:       Install a new Windows game
-  manufacturer: Microsoft
-  release: 1992
-  hardware: computer
-  platform:   windows
-  group:      windows
-  comment_en: |
-    For more info: https://wiki.batocera.org/systems:windows
-  comment_fr: |
-    Trouvez la documentation ici: https://wiki.batocera.org/systems:windows
-  comment_br: |
-    Para mais informações: https://wiki.batocera.org/systems:windows
-
 halflife:
   name: Half-Life 1
   manufacturer: Ports
@@ -3040,57 +3012,12 @@ hikaru:
     ## HIKARU IMPORTANT INFO ##
     ---------------------------------
 
-    You can now play Sega Hikaru games using Mame or Demul (with WINE).
-    The emulators are still work in progress for Hikaru games so mileage will vary.
+    You can now play Sega Hikaru games using MAME.
+    The emulator is still work in progress for Hikaru games so mileage will vary.
     Zipped roms should be stored in the appropriate hikaru directory compatible with MAME 0.284 or later.
 
     Performance depends on your x86_64 system hardware.
     If you get audio stuttering & slow music, your system isn't performant enough to run this system.
-
-    Note: Your graphics card requires Vulkan drivers for Demul to work.
-
-    -----------------
-    Demul First Start
-    -----------------
-
-    You need to run a ROM at least once AND be connected to the internet.
-    This creates the directory structure & installs the associated Windows libraries for WINE.
-
-    Note: It may take some minutes before the game starts with the first use, this is NORMAL!
-    *** Please be patient as it can take up to 2 minutes depending on your internet connection speed ***
-
-    -----------------
-    Demul Controllers
-    -----------------
-
-    Currently controllers cannot be configured using the desktop app.
-    This is a limitation of the Demul app under Wine but also a known buggy pad plugin, even under Windows.
-    Currently we map 2 players using the emulators default keyboard configuration using evmapy.
-
-    ------------------
-    Demul Service Menu
-    ------------------
-
-    Note: Keyboard required.
-    You can access the Service Menu using F4 and then use F2 to navigate with F4 to select.
-
-    ---------------------
-    Demul Compatible ROMs
-    ---------------------
-
-    Demul has a specific list of currently compatible roms:
-
-    airtrix: Air Trix (Rev. A)
-    airtrixo: Air Trix (original)
-    braveff: Brave Firefighters
-    hikcheck: Hikaru Check ROM BD
-    pharrier: Planet Harriers (Rev. A)
-    swracer: Star Wars: Racer Arcade
-    sgnascar: NASCAR Arcade (Rev. A)
-    sgnascaro: NASCAR Arcade (original)
-    von4: Cyber Troopers Virtual-On 4: Force (Rev. E)
-
-    With both MAME and Demul you should be able to play a good collection of games.
 
     Enjoy Sega Hikaru games under Linux!
 
@@ -3105,54 +3032,12 @@ gaelco:
     ## GAELCO IMPORTANT INFO ##
     ---------------------------------
 
-    You can now play Sega Gaelco games using Mame or Demul (with WINE).
-    The emulators are still work in progress for Gaelco games so mileage will vary.
+    You can now play Sega Gaelco games using MAME.
+    The emulator is still work in progress for Gaelco games so mileage will vary.
     Zipped roms should be stored in the appropriate gaelco directory compatible with MAME 0.284 or later.
 
     Performance depends on your x86_64 system hardware.
     If you get audio stuttering & slow music, your system isn't performant enough to run this system.
-
-    Note: Your graphics card requires Vulkan drivers for Demul to work.
-
-    -----------------
-    Demul First Start
-    -----------------
-
-    You need to run a ROM at least once AND be connected to the internet.
-    This creates the directory structure & installs the associated Windows libraries for WINE.
-
-    Note: It may take some minutes before the game starts with the first use, this is NORMAL!
-    *** Please be patient as it can take up to 2 minutes depending on your internet connection speed ***
-
-    -----------------
-    Demul Controllers
-    -----------------
-
-    Currently controllers cannot be configured using the desktop app.
-    This is a limitation of the Demul app under Wine but also a known buggy pad plugin, even under Windows.
-    Currently we map 2 players using the emulators default keyboard configuration using evmapy.
-
-    ------------------
-    Demul Service Menu
-    ------------------
-
-    Note: Keyboard required.
-    You can access the Service Menu using F4 and then use F2 to navigate with F4 to select.
-
-    ---------------------
-    Demul Compatible ROMs
-    ---------------------
-
-    Demul has a specific list of currently compatible roms:
-
-    atvtrack: ATV Track (set 1)
-    atvtracka: ATV Track (set 2)
-    gfootbal: Gaelco Football
-    smashdrv: Smashing Drive (World)
-    smashdrvb: Smashing Drive (UK)
-    smashdrvs: Smashing Drive (Spain, Portugal)
-
-    With both MAME and Demul you should be able to play a good collection of games.
 
     Enjoy Sega Gaelco games under Linux!
 
@@ -3167,77 +3052,12 @@ cave3rd:
     ## CAVE CV1000 IMPORTANT INFO ##
     ---------------------------------
 
-    You can now play Sega Cave CV1000 games using Mame or Demul (with WINE).
-    The emulators are still work in progress for Cave CV1000 games so mileage will vary.
+    You can now play Sega Cave CV1000 games using MAME.
+    The emulator is still work in progress for Cave CV1000 games so mileage will vary.
     Zipped roms should be stored in the appropriate cave3rd directory compatible with MAME 0.284 or later.
 
     Performance depends on your x86_64 system hardware.
     If you get audio stuttering & slow music, your system isn't performant enough to run this system.
-
-    Note: Your graphics card requires Vulkan drivers for Demul to work.
-
-    -----------------
-    Demul First Start
-    -----------------
-
-    You need to run a ROM at least once AND be connected to the internet.
-    This creates the directory structure & installs the associated Windows libraries for WINE.
-
-    Note: It may take some minutes before the game starts with the first use, this is NORMAL!
-    *** Please be patient as it can take up to 2 minutes depending on your internet connection speed ***
-
-    -----------------
-    Demul Controllers
-    -----------------
-
-    Currently controllers cannot be configured using the desktop app.
-    This is a limitation of the Demul app under Wine but also a known buggy pad plugin, even under Windows.
-    Currently we map 2 players using the emulators default keyboard configuration using evmapy.
-
-    ------------------
-    Demul Service Menu
-    ------------------
-
-    Note: Keyboard required.
-    You can access the Service Menu using F4 and then use F2 to navigate with F4 to select.
-
-    ---------------------
-    Demul Compatible ROMs
-    ---------------------
-
-    Demul has a specific list of currently compatible roms:
-
-    akatana: Akai Katana (2010/ 8/13 MASTER VER.)
-    deathsmil: Deathsmiles (2007/10/09 MASTER VER)
-    dsmbl: Deathsmiles Mega Black Label (2008/10/06 MEGABLACK LABEL VER)
-    ddpdfk: Dodonpachi Daifukkatsu Ver. 1.5 (2008/06/23 MASTER VER 1.5)
-    ddpdfk10: Dodonpachi Daifukkatsu 1.0 (2008/05/16 MASTER VER)
-    dfkbl: Dodonpachi Daifukkatsu Black Label (2010/ 1/18 BLACK LABEL)
-    ddpsdoj: Dodonpachi Saidaioujou (2012/ 4/20)
-    espgal2: Espgaluda II (2005/11/14 MASTER VER, CV1000-C)
-    espgal2a: Espgaluda II (2005/11/14 MASTER VER, CV1000-B)
-    futari10: Mushihime-sama Futari (2006/10/23 MASTER VER.)
-    futari15: Mushihime-sama Futari Ver. 1.5 (2006/12/8.MASTER VER. 1.54.)
-    futari15a: Mushihime-sama Futari Ver. 1.5 (2006/12/8 MASTER VER 1.54)
-    futaribl: Mushihime-sama Futari Black Label - Another Ver (2009/11/27 INTER...)
-    futariblj: Mushihime-sama Futari Black Label (2007/12/11 BLACK LABEL VER)
-    ibara: Ibara (2005/03/22 MASTER VER.., '06. 3. 7 ver.)
-    ibarao: Ibara (2005/03/22 MASTER VER..)
-    ibarablk: Ibara Kuro Black Label (2006/02/06. MASTER VER.)
-    ibarablka: Ibara Kuro Black Label (2006/02/06 MASTER VER.)
-    mmmbanc: Medal Mahjong Moukari Bancho (2007/06/05 MASTER VER.)
-    mmpork: Muchi Muchi Pork! (2007/ 4/17 MASTER VER.)
-    mushisam: Mushihime-sama (2004/10/12.MASTER VER.)
-    mushisama: Mushihime-sama (2004/10/12 MASTER VER.)
-    mushisamb: Mushihime-sama (2004/10/12 MASTER VER.)
-    mushitam: Puzzle! Mushihime-tama (2005/09/09. MASTER VER)
-    mushitama: Puzzle! Mushihime-tama (2005/09/09 MASTER VER)
-    pinkswts: Pink Sweets Ibara Sorekara (2006/04/06 MASTER VER....)
-    pinkswtsa: Pink Sweets Ibara Sorekara (2006/04/06 MASTER VER...)
-    pinkswtsb: Pink Sweets Ibara Sorekara (2006/04/06 MASTER VER.)
-    pinkswtsx: Pink Sweets Ibara Sorekara (2006/XX/XX MASTER VER.)
-
-    With both MAME and Demul you should be able to play a good collection of games.
 
     Enjoy Sega Cave CV1000 games under Linux!
 
@@ -3263,16 +3083,11 @@ xbox360:
   release: 2005
   hardware: console
   comment_en: |
-    Xenia and Xenia Canary run under WINE and require Vulkan 1.3+. An internet connection is needed to create the initial WINE bottle.
-    Xenia Edge is a native Linux port — no WINE required, uses Vulkan directly.
+    Xenia Edge is a native Linux port — no WINE required, uses Vulkan directly, requires Vulkan 1.3+.
   comment_fr: |
-    Xenia et Xenia Canary fonctionnent sous WINE et nécessitent Vulkan 1.3+. Une connexion Internet est requise pour créer la bouteille WINE initiale.
-    Xenia Edge est un portage Linux natif — pas de WINE, utilise Vulkan directement.
+    Xenia Edge est un portage Linux natif — pas de WINE, utilise Vulkan directement, nécessite Vulkan 1.3+.
   comment_br: |
-    Xenia e Xenia Canary rodam em WINE e requerem Vulkan 1.3+. Uma conexão com a internet é necessária para criar a garrafa WINE inicial.
-    Xenia Edge é um port Linux nativo — sem WINE, usa Vulkan diretamente.
-
-    Nota: É necessária uma ligação à Internet para criar a garrafa de WINE inicial.
+    Xenia Edge é um port Linux nativo — sem WINE, usa Vulkan diretamente, requer Vulkan 1.3+.
 
 ngage:
   name: N-Gage
@@ -4654,68 +4469,6 @@ catacomb:
     Trouvez la documentation ici : https://wiki.batocera.org/systems:catacombgl
   comment_br: |
     Para mais informações: https://wiki.batocera.org/systems:catacombgl
-
-lindbergh:
-  name: Sega Lindbergh
-  manufacturer: Sega
-  release: 2005
-  hardware: arcade
-  platform: lindbergh, arcade
-  comment_en: |
-    Sega Lindbergh requires good knowledge of rom dumps.
-    We strongly recommend you read the wiki before asking for support.
-
-    To launch a game, create an file name with the .game extension as suggested below in the location where the rom will execute from.
-    Here are the working games and associated extensions at the time of writing:
-
-    Game                                Filename               Game ID
-    ----                              | --------             | -------
-    2 Spicy                           | apacheM.elf          | 2spicy.game
-    After Burner Climax (Export)      | abc                  | abclimax.game
-                        (SDX)         | abc                  | abclisdx.game
-    Ghost Squad Evolution             | vsg or gsevo         | ghostsev.game
-    Harley Davidson King of the Road  | chopperM.elf         | hdkotr.game
-    Hummer                            | a.elf                | hummer.game
-    Hummer Extreme Edition            | hummer_Master.elf    | hummerxt.game
-    Initial D Arcade Stage 4 (Rev G)  | id4.elf              | initiad4.game
-                             (Rev A)  | id4.elf              | initiad4a.game
-                             (Rev B)  | id4.elf              | initiad4b.game
-    Initial D 4 (Export) (Rev D)      | id4.elf              | initiad4ex.game
-                         (Rev B)      | id4.elf              | initiad4exb.game
-                         (Rev C)      | id4.elf              | initiad4exc.game
-    Initial D Arcade Stage 5 (Rev B)  | id5.elf              | initiad5.game
-                             (Rev A)  | id5.elf              | initiad5a.game
-    Initial D 5 (Export) (4.0)        | id5.elf              | initiad5ex.game
-                         (2.0)        | id5.elf              | initiad5exa.game
-    Let's Go Jungle                   | lgj_final            | letsgoju.game
-    Let's Go Jungle Special           | lgjsp_app            | letsgojusp.game
-    OutRun 2 SP SDX                   | Jennifer             | outr2sdx.game
-    Primeval Hunt                     | main.exe             | primevah.game
-    R-Tuned Ultimate Street Racing    | dsr                  | rtuned.game
-    Rambo                             | ramboM.elf           | rambo.game
-    Sega Race TV                      | drive.elf            | segartv.game
-    The House of the Dead 4           | hod4M.elf            | hotd4.game
-    The House of the Dead 4 Special   | hod4M.elf            | hotd4sp.game
-    The House of the Dead EX          | hodexRI.elf          | hotdex.game
-    Virtua Fighter 5 (Export)         | vf5                  | vf5.game
-    Virtua Fighter 5 C                | vf5                  | vf5c.game
-    Virtua Fighter 5 R                | vf5                  | vf5r.game
-    Virtua Fighter 5 Final Showdown   | vf5                  | vf5fs.game
-    Virtua Tennis 3                   | vt3 or vt3_Lindbergh | vtennis3.game
-
-    i.e . Create ghostsev.game in the /userdata/roms/lindbergh/Ghost Squad Evolution/vsg_l directory
-    EmulationStation will then see the game & launch it accordingly.
-
-    The Game ID naming helps identify gun & steering wheel games as well as scrapers.
-
-    LinuxLoader compatibility list is here:
-    https://github.com/lindbergh-loader/linuxloader/blob/main/docs/guide-linux.md
-
-    For more info: https://wiki.batocera.org/systems:lindbergh
-  comment_fr: |
-    Trouvez la documentation ici : https://wiki.batocera.org/systems:lindbergh
-  comment_br: |
-    Para mais informações: https://wiki.batocera.org/systems:lindbergh
 
 oricatmos:
   name: Oric Atmos

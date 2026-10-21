@@ -77,7 +77,7 @@ GROUPS = {
         "ppsspp", "python-pygame2", "python-pyxel", "redream", "rpcs3", "ruffle",
         "scummvm", "shadps4", "simcoupe", "snes9x", "solarus-engine",
         "sugarbox", "supermodel", "thextech", "tsugaru", "vice",
-        "vita3k", "vpinball", "x16emu", "xemu", "xemu", "xenia", "xenia-canary"
+        "vita3k", "vpinball", "x16emu", "xemu", "xemu"
     ],
     "PORTS": [
         "abuse", "abuse-data", "bloodmod", "bstone", "cannonball", "catacombgl",
@@ -85,15 +85,15 @@ GROUPS = {
         "devilutionx", "dhewm3", "dxx-rebirth", "ecwolf", "eduke32", "eldoom",
         "etlegacy", "fallout1-ce", "fallout2-ce", "fitz", "grimm",
         "hardcorps", "hcl", "hurrican", "ioquake3", "iortcw", "jazz2-native",
-        "linuxloader", "openmohaa", "openjazz", "openjk", "openjkdf2", "perfected",
+        "openmohaa", "openjazz", "openjk", "openjkdf2", "perfected",
         "raze", "realgibs", "rivensin", "sdlpop", "sikkmod", "sonic3-air", "sonic2013",
         "soniccd", "sonic-mania", "taradino", "theforceengine", "trx", "tyrian",
         "uqm", "uzdoom", "hlsdk-xash3d", "hlsdk-xash3d-dmc", "hlsdk-xash3d-opfor",
         "xash3d-fwgs", "vkquake", "vkquake2", "vkquake3", "yquake2", "yquake2-xatrix",
         "yquake2-rogue", "yquake2-zaero"
     ],
-    "WINE": [
-        "dxvk", "dxvk-nvapi", "faudio", "mf", "rtkit", "vkd3d-proton", "wine-tkg"
+    "AUDIO_SHARED": [
+        "faudio", "rtkit"
     ],
     "CONTROLLERS": [
         "aelightgun", "aimtrak-guns", "anbernic-gpio-pad", "batocera-gun-calibrator",
@@ -106,12 +106,9 @@ GROUPS = {
         "wiimotes-rules", "xarcade2jstick", "xgunner-lightguns", "xone", "xow", "xpadneo",
         "xpad-noone"
     ],
-    "WINE": [
-        "dxvk", "dxvk-nvapi", "faudio", "mf", "rtkit", "vkd3d-proton", "wine-tkg"
-    ],
     "UTILS": [
-        "box64", "btop", "mangohud", "moonlight-embedded", "moonlight-qt", "ryzenadj",
-        "switchres", "syncthing", "winetricks"
+        "btop", "mangohud", "moonlight-embedded", "moonlight-qt", "ryzenadj",
+        "switchres", "syncthing"
     ]
 }
 
