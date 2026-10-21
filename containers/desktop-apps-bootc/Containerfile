@@ -36,7 +36,8 @@ dnf install -y \
     mesa-dri-drivers \
     mesa-vulkan-drivers \
     liberation-fonts \
-    pipewire-pulseaudio
+    pipewire-pulseaudio \
+    sudo
 dnf clean all
 EOF
 
@@ -46,8 +47,31 @@ EOF
 # hardware this image itself installed drivers for (DRM/render, audio,
 # input) - unlike container_apps's dynamic /dev-GID matching, there's no
 # host to match against here, this image IS the whole OS.
+#
+# video/audio/input/render are sysusers.d-declared but not yet
+# materialized into /etc/group at build time (Fedora synthesizes them
+# virtually via nss-systemd until systemd-sysusers actually runs at boot),
+# so `usermod -aG` silently no-ops here - it resolves the group via NSS,
+# sees it "already exists", and never writes a real, editable line.
+# Appending the real line ourselves (same name+GID as the declared one)
+# sidesteps that; `files` is checked first in nsswitch.conf and merges
+# cleanly with the synthesized entry rather than conflicting with it. GIDs
+# are read from the sysusers.d declaration itself rather than hardcoded,
+# so this doesn't silently drift if a future base image renumbers them.
 RUN useradd -m -s /bin/bash kiosk && \
-    usermod -aG video,audio,input,render kiosk
+    for g in video audio input render; do \
+        gid=$(grep -hoP "^g $g \K[0-9]+" /usr/lib/sysusers.d/*.conf | head -1); \
+        echo "$g:x:$gid:kiosk" >> /etc/group; \
+    done
+
+# Separate admin login for console/SSH access to manage the appliance -
+# the kiosk session itself has no sudo and can't reach root. NOPASSWD
+# since there's no secret to bake into the image; lock it down with a
+# real password or SSH key once this is actually deployed somewhere.
+RUN useradd -m -s /bin/bash admin && \
+    usermod -aG wheel admin && \
+    echo 'admin ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/admin && \
+    chmod 0440 /etc/sudoers.d/admin
 
 COPY --chmod=0755 xinitrc /etc/kiosk/xinitrc
 COPY picom.conf /etc/kiosk/picom.conf
