@@ -1,0 +1,10 @@
+shared_features:
+  - powermode
+  - cpucluster
+  - tdp
+  - platformprofile
+  - videomode
+file_extensions:
+  - appman
+systems:
+  - appman

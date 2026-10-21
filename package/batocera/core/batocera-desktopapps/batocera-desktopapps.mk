@@ -136,11 +136,6 @@ ifeq ($(BR2_PACKAGE_CEMU),y)
   BATOCERA_DESKTOPAPPS_ICONS   += cemu.png
 endif
 
-# flatpak
-ifeq ($(BR2_PACKAGE_BAUH),y)
-  BATOCERA_DESKTOPAPPS_APPS    += flatpak-config.desktop
-endif
-
 # melonds
 ifeq ($(BR2_PACKAGE_MELONDS),y)
   BATOCERA_DESKTOPAPPS_SCRIPTS += batocera-config-melonds

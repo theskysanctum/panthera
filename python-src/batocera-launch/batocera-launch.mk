@@ -23,6 +23,7 @@ BATOCERA_LAUNCH_LOCAL_PYTHON_EXCLUSIONS = \
 		$(if $(BR2_PACKAGE_ABUSE),,abuse.py) \
 		$(if $(BR2_PACKAGE_AMIBERRY),,amiberry.py) \
 		$(if $(BR2_PACKAGE_APPLEWIN),,applewin.py) \
+		$(if $(BR2_PACKAGE_APPMAN),,appman.py) \
 		$(if $(BR2_PACKAGE_ARMSX2),,armsx2.py) \
 		$(if $(BR2_PACKAGE_AZAHAR),,azahar.py) \
 		$(if $(BR2_PACKAGE_BIGPEMU),,bigpemu.py) \
@@ -43,7 +44,6 @@ BATOCERA_LAUNCH_LOCAL_PYTHON_EXCLUSIONS = \
 		$(if $(BR2_PACKAGE_ECWOLF),,ecwolf.py) \
 		$(if $(BR2_PACKAGE_EDUKE32),,eduke32.py) \
 		$(if $(BR2_PACKAGE_ETLEGACY),,etlegacy.py) \
-		$(if $(BR2_PACKAGE_FLATPAK),,flatpak.py) \
 		$(if $(BR2_PACKAGE_FSUAE),,fsuae.py) \
 		$(if $(BR2_PACKAGE_GAMETANK_EMULATOR),,gametank_emulator.py) \
 		$(if $(BR2_PACKAGE_GSPLUS),,gsplus.py) \
@@ -79,7 +79,6 @@ BATOCERA_LAUNCH_LOCAL_PYTHON_EXCLUSIONS = \
 		$(if $(BR2_PACKAGE_SONIC3_AIR),,sonic3_air.py) \
 		$(if $(BR2_PACKAGE_SONIC_MANIA),,sonic_mania.py) \
 		$(if $(BR2_PACKAGE_SONIC2013)$(BR2_PACKAGE_SONICCD),,sonicretro.py) \
-		$(if $(BR2_PACKAGE_BATOCERA_STEAM),,steam.py) \
 		$(if $(BR2_PACKAGE_STELLA),,stella.py) \
 		$(if $(BR2_PACKAGE_SUPERMODEL),,supermodel.py) \
 		$(if $(BR2_PACKAGE_TARADINO),,taradino.py) \

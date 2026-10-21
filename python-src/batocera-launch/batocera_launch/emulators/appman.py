@@ -20,20 +20,26 @@
 
 from __future__ import annotations
 
-from batocera_common.asyncio import run
+from typing import Final
+
 from batocera_common.dataclasses import cached_dataclass, cached_property
+from batocera_common.paths import SAVES
 from batocera_launch import Command, Emulator, HotkeysContext
+
+_APPMAN_HOME: Final = SAVES / 'appman'
+_APPMAN_BIN: Final = _APPMAN_HOME / 'bin'
+_APPMAN_SHARE: Final = _APPMAN_HOME / 'share'
+_APPMAN_CONFIG: Final = _APPMAN_HOME / 'config'
+_APPMAN_CACHE: Final = _APPMAN_HOME / 'cache'
 
 
 @cached_dataclass
-class Flatpak(Emulator):
+class Appman(Emulator):
     @cached_property
     def hotkeygen_context(self) -> HotkeysContext:
         return {
-            'name': 'flatpak',
-            'keys': {
-                'exit': 'export XDG_RUNTIME_DIR=/var/run; flatpak kill $(flatpak ps --columns=application | head -n 1)'
-            },
+            'name': 'appman',
+            'keys': {'exit': ['KEY_LEFTALT', 'KEY_F4']},
         }
 
     @property
@@ -41,13 +47,17 @@ class Flatpak(Emulator):
         return True
 
     async def configure(self) -> Command:
-        rom_id = self.rom.read_text().strip()
+        program = self.rom.read_text().strip()
 
-        # bad hack in a first time to get audio for user batocera
-        await run('chown', '-R', 'root:audio', '/var/run/pulse', check=False)
-        await run('chmod', '-R', 'g+rwX', '/var/run/pulse', check=False)
+        for directory in (_APPMAN_BIN, _APPMAN_SHARE, _APPMAN_CONFIG, _APPMAN_CACHE):
+            directory.mkdir(parents=True, exist_ok=True)
 
         return Command(
-            ['/usr/bin/flatpak', 'run', '-v', rom_id],
-            env={'SDL_JOYSTICK_HIDAPI_XBOX': '0'},
+            [_APPMAN_BIN / program],
+            env={
+                'XDG_BIN_HOME': _APPMAN_BIN,
+                'XDG_DATA_HOME': _APPMAN_SHARE,
+                'XDG_CONFIG_HOME': _APPMAN_CONFIG,
+                'XDG_CACHE_HOME': _APPMAN_CACHE,
+            },
         )

@@ -57,6 +57,9 @@ apple2:
 apple2gs:
   emulator: gsplus
   core:     gsplus
+appman:
+  emulator: appman
+  core:     appman
 arcadia:
   emulator: libretro
   core:     mame
@@ -236,11 +239,6 @@ fds:
 flash:
   emulator: ruffle
   core:     ruffle
-  options:
-    hud_support: false
-flatpak:
-  emulator: flatpak
-  core:     flatpak
   options:
     hud_support: false
 fm7:
@@ -691,9 +689,6 @@ sonicretro:
 spectravideo:
   emulator: libretro
   core:     bluemsx
-steam:
-  emulator: steam
-  core:     steam
 superbroswar:
   emulator: libretro
   core:     superbroswar

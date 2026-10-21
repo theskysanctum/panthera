@@ -1,0 +1,8 @@
+config BR2_PACKAGE_APPMAN
+	bool "appman"
+	help
+	  "AM"/AppMan is a portable, root-free manager for AppImages and
+	  other portable programs: it installs, updates and integrates
+	  them without touching the system image.
+
+	  https://github.com/ivan-hc/AM
