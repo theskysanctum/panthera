@@ -25,7 +25,8 @@ apt-get install -y --no-install-recommends \
     mesa-vulkan-drivers \
     libgl1-mesa-dri \
     libpulse0 \
-    util-linux
+    util-linux \
+    acl
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF

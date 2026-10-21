@@ -3,22 +3,16 @@ set -e
 
 APP_USER=appuser
 
-# Host /dev nodes keep their host-side group ownership across the bind
-# mount, and those GIDs vary per host - so match appuser into whatever
-# groups the passed-through hardware actually belongs to, rather than
-# baking in a fixed list. Root-owned (gid 0) devices need no extra group;
-# everything else gets appuser added to a same-GID group, creating one
-# locally if the container doesn't already have it.
-for dev in /dev/dri/* /dev/video* /dev/input/* /dev/snd/* /dev/bus/usb/*/*; do
+# Grant appuser rw on whatever hardware actually got passed through, via a
+# per-file ACL rather than matching it into the device's owning group:
+# some of these (USB bus nodes, rfkill) are root:root with no group write
+# bit for anyone else to join anyway, and group-matching on an arbitrary
+# host GID risks silently handing appuser membership in something
+# unrelated and more sensitive (e.g. "disk") if a device happens to share
+# that GID. setfacl only affects the one file.
+for dev in /dev/dri/* /dev/video* /dev/input/* /dev/snd/* /dev/bus/usb/*/* /dev/rfkill; do
     [ -e "$dev" ] || continue
-    gid=$(stat -c %g "$dev")
-    [ "$gid" = "0" ] && continue
-    group=$(getent group "$gid" | cut -d: -f1)
-    if [ -z "$group" ]; then
-        group="hostdev$gid"
-        groupadd -g "$gid" "$group"
-    fi
-    usermod -aG "$group" "$APP_USER" >/dev/null
+    setfacl -m "u:$APP_USER:rw" "$dev" || echo "entrypoint: couldn't ACL $dev, continuing" >&2
 done
 
 # XAUTHORITY is bind-mounted read-only from the host and typically owned by
