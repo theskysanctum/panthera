@@ -1,0 +1,49 @@
+# Standalone bootable variant of ../desktop-apps: the same openbox + picom +
+# Brave kiosk session, but as the OS itself (built on Fedora bootc) rather
+# than a container run on top of Panthera via podman/container_apps. Build
+# with bootc-image-builder to get a flashable .raw disk - see README.md.
+#
+# "The OS is in userland" here just means this is a stock Fedora bootc base
+# with a kiosk session layered on as ordinary RPM packages + a systemd unit
+# - no custom kernel, no custom rootfs build, nothing Buildroot-specific.
+FROM quay.io/fedora/fedora-bootc:42
+
+ARG KIOSK_CMD="/usr/bin/brave-browser --no-sandbox --kiosk https://example.com"
+
+# Brave's own repo, since Fedora doesn't package it.
+RUN <<EOF
+curl -fsSL https://brave-browser-rpm-release.s3.brave.com/brave-core.asc \
+    -o /etc/pki/rpm-gpg/RPM-GPG-KEY-brave-core
+cat > /etc/yum.repos.d/brave-browser.repo <<REPO
+[brave-browser]
+name=Brave Browser
+baseurl=https://brave-browser-rpm-release.s3.brave.com/x86_64/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-brave-core
+REPO
+EOF
+
+RUN <<EOF
+dnf install -y \
+    brave-browser \
+    openbox \
+    picom \
+    xorg-x11-server-Xorg \
+    xorg-x11-xinit \
+    xorg-x11-xauth \
+    xrandr \
+    mesa-dri-drivers \
+    mesa-vulkan-drivers \
+    liberation-fonts \
+    pipewire-pulseaudio
+dnf clean all
+EOF
+
+COPY --chmod=0755 xinitrc /etc/kiosk/xinitrc
+COPY picom.conf /etc/kiosk/picom.conf
+COPY kiosk.service /usr/lib/systemd/system/kiosk.service
+
+RUN sed -i "s|@KIOSK_CMD@|${KIOSK_CMD}|" /etc/kiosk/xinitrc && \
+    systemctl enable kiosk.service && \
+    systemctl set-default multi-user.target
