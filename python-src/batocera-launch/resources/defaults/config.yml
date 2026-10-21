@@ -786,6 +786,9 @@ vircon32:
 virtualboy:
   emulator: libretro
   core:     vb
+vm_apps:
+  emulator: qemu
+  core:     other
 vis:
   emulator: libretro
   core:     mame

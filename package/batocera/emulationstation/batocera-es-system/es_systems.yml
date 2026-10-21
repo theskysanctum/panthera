@@ -1957,6 +1957,51 @@ os_hdds:
     É aqui que as instalações feitas em "Instalação" (os_install) terminam;
     você também pode colocar imagens de disco prontas aqui diretamente.
 
+vm_apps:
+  name:       VM Applications
+  manufacturer: Various
+  release:
+  hardware: computer
+  file_extensions: [vmapp]
+  platform: pc
+  group:      other_environments
+  comment_en: |
+    ## OTHER ENVIRONMENTS : APPLICATIONS ##
+    -------------------------------------------------------------------------------
+    Shortcuts that boot a disk from "Virtual Hard Disks" (os_hdds) and launch a
+    single program inside it, via the QEMU guest agent (needs the VirtIO-Win
+    Guest Tools installed in that guest - see "Install Other OS"). The VM shuts
+    down automatically once the program exits. Create a shortcut with a text
+    editor as a ".vmapp" file:
+      disk: name.qcow2          # path, relative to the os_hdds folder
+      core: win10                # winxp / win7 / win10 / other - must match the disk
+      exe: C:\Path\To\App.exe
+      args: []                   # optional command-line arguments
+  comment_fr: |
+    ## AUTRES ENVIRONNEMENTS : APPLICATIONS ##
+    -------------------------------------------------------------------------------
+    Raccourcis qui démarrent un disque depuis "Disques Durs Virtuels" (os_hdds)
+    et y lancent un seul programme, via l'agent invité QEMU (nécessite les
+    VirtIO-Win Guest Tools installés dans cet invité - voir "Installation"). La
+    VM s'arrête automatiquement une fois le programme terminé. Créez un
+    raccourci avec un éditeur de texte sous forme de fichier ".vmapp" :
+      disk: nom.qcow2            # chemin, relatif au dossier os_hdds
+      core: win10                 # winxp / win7 / win10 / other - doit correspondre au disque
+      exe: C:\Chemin\Vers\App.exe
+      args: []                    # arguments de ligne de commande optionnels
+  comment_br: |
+    ## OUTROS AMBIENTES : APLICATIVOS ##
+    -------------------------------------------------------------------------------
+    Atalhos que iniciam um disco de "Discos Rígidos Virtuais" (os_hdds) e
+    executam um único programa nele, via o agente guest do QEMU (requer o
+    VirtIO-Win Guest Tools instalado nesse guest - veja "Instalação"). A VM se
+    desliga automaticamente quando o programa termina. Crie um atalho com um
+    editor de texto como um arquivo ".vmapp":
+      disk: nome.qcow2           # caminho, relativo à pasta os_hdds
+      core: win10                 # winxp / win7 / win10 / other - deve corresponder ao disco
+      exe: C:\Caminho\Para\App.exe
+      args: []                    # argumentos de linha de comando opcionais
+
 halflife:
   name: Half-Life 1
   manufacturer: Ports

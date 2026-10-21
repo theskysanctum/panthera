@@ -58,3 +58,6 @@ systems:
       - qcow2
       - img
       - raw
+  - name: vm_apps
+    file_extensions:
+      - vmapp
