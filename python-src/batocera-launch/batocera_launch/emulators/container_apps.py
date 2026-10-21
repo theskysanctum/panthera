@@ -32,6 +32,11 @@ from batocera_launch import Command, Emulator, HotkeysContext
 _PODMAN_BIN: Final = Path('/usr/bin/podman')
 _X11_SOCKET_DIR: Final = Path('/tmp/.X11-unix')
 
+# Bind-mounting the whole host /run (rather than just the paths actually
+# needed) stomps on paths podman/crun need for their own bookkeeping inside
+# the container (e.g. /run/secrets), which breaks container startup entirely.
+_RUN_BIND_MOUNTS: Final = (Path('/run/dbus'), Path('/run/user'))
+
 
 @cached_dataclass
 class ContainerApps(Emulator):
@@ -64,10 +69,13 @@ class ContainerApps(Emulator):
             '--ipc', 'host',
             '--pid', 'host',
             '-v', '/dev:/dev',
-            '-v', '/run:/run',
             '-v', f'{_X11_SOCKET_DIR}:{_X11_SOCKET_DIR}',
             '-e', f'DISPLAY={display}',
         ]
+
+        for path in _RUN_BIND_MOUNTS:
+            if path.exists():
+                args += ['-v', f'{path}:{path}']
 
         if xauthority.exists():
             args += ['-v', f'{xauthority}:{xauthority}', '-e', f'XAUTHORITY={xauthority}']
