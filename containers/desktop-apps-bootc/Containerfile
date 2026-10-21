@@ -8,7 +8,7 @@
 # - no custom kernel, no custom rootfs build, nothing Buildroot-specific.
 FROM quay.io/fedora/fedora-bootc:42
 
-ARG KIOSK_CMD="/usr/bin/brave-browser --no-sandbox --kiosk https://example.com"
+ARG KIOSK_CMD="/usr/bin/brave-browser --kiosk https://example.com"
 
 # Brave's own repo, since Fedora doesn't package it.
 RUN <<EOF
@@ -39,6 +39,15 @@ dnf install -y \
     pipewire-pulseaudio
 dnf clean all
 EOF
+
+# Chromium (and GUI apps generally) refuse their own sandbox when running
+# as root, so the kiosk session runs as a real non-root user rather than
+# working around that with --no-sandbox. Group membership covers the
+# hardware this image itself installed drivers for (DRM/render, audio,
+# input) - unlike container_apps's dynamic /dev-GID matching, there's no
+# host to match against here, this image IS the whole OS.
+RUN useradd -m -s /bin/bash kiosk && \
+    usermod -aG video,audio,input,render kiosk
 
 COPY --chmod=0755 xinitrc /etc/kiosk/xinitrc
 COPY picom.conf /etc/kiosk/picom.conf

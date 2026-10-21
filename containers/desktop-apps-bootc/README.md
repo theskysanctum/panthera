@@ -49,13 +49,15 @@ it directly into the kiosk session, no installer step needed.
 
 ## Design notes
 
-- Runs as root, same reasoning as `container_apps`: this is a
-  single-purpose appliance with no real multi-user boundary to protect,
-  not a general-purpose desktop, so the usual argument for an unprivileged
-  X session doesn't buy much here.
-- `kiosk.service` replaces a display manager: it starts X directly on
-  tty1 via `startx` and restarts it if the session ever exits, so there's
-  nothing to log into and nothing that falls back to a login prompt.
+- Runs as a real non-root user (`kiosk`), not root: Chromium (and GUI apps
+  generally) refuse their own sandbox when running as root, so rather than
+  work around that with `--no-sandbox`, the session just isn't root.
+  `kiosk` is in the `video`/`audio`/`input`/`render` groups so the browser
+  can actually use the hardware this image installed drivers for.
+- `kiosk.service` replaces a display manager: `User=`/`PAMName=login` get
+  it a real logind session on tty1, it starts X directly via `startx`, and
+  restarts if the session ever exits - so there's nothing to log into and
+  nothing that falls back to a login prompt.
 - Updates are plain `bootc` image updates (`bootc upgrade`) against
   whatever registry `desktop-apps-bootc:latest` gets pushed to - rebuild
   the container image, push it, and running instances pull the new layer

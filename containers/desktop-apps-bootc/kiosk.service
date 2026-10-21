@@ -5,6 +5,8 @@ Conflicts=getty@tty1.service
 
 [Service]
 Type=simple
+User=kiosk
+PAMName=login
 ExecStart=/usr/bin/startx /etc/kiosk/xinitrc -- :0 vt1 -nolisten tcp
 Restart=always
 RestartSec=2
@@ -14,6 +16,8 @@ StandardError=journal
 TTYPath=/dev/tty1
 TTYReset=yes
 TTYVHangup=yes
+UtmpIdentifier=tty1
+UtmpMode=user
 
 [Install]
 WantedBy=multi-user.target

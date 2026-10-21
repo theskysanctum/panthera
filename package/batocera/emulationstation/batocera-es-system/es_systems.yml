@@ -2316,24 +2316,25 @@ container_apps:
   comment_en: |
           Full Linux desktop apps (Brave and other browser-based apps), run via
           Podman in a shared OCI container (openbox + picom + Brave), with USB,
-          Bluetooth, webcam, GPU and network passthrough. Create a shortcut with
-          a text editor as a ".capp" file:
+          Bluetooth, webcam, GPU and network passthrough. The app itself runs as
+          a non-root user inside the container (podman/the host side still has
+          full device access - the app process just doesn't need root to use
+          it), so it keeps its own sandbox. Create a shortcut with a text
+          editor as a ".capp" file:
           image: desktop-apps:latest   # the OCI image to run
-          cmd: ["/usr/bin/brave-browser", "--no-sandbox", "--app=https://example.com"]
-          # --no-sandbox is required: the container always runs as root (that's
-          # what gives it full device access), and Chromium refuses to run its
-          # own sandbox as root.
+          cmd: ["/usr/bin/brave-browser", "--app=https://example.com"]
   comment_br: |
           Aplicativos completos de desktop Linux (Brave e outros aplicativos
           baseados em navegador), executados via Podman em um contêiner OCI
           compartilhado (openbox + picom + Brave), com passagem de USB,
-          Bluetooth, webcam, GPU e rede. Crie um atalho com um editor de texto
+          Bluetooth, webcam, GPU e rede. O aplicativo em si roda como um
+          usuário sem privilégios de root dentro do contêiner (o podman/lado
+          do host ainda tem acesso total aos dispositivos - o processo do
+          aplicativo é que não precisa de root para usá-los), então ele
+          mantém sua própria sandbox. Crie um atalho com um editor de texto
           como um arquivo ".capp":
           image: desktop-apps:latest   # a imagem OCI a ser executada
-          cmd: ["/usr/bin/brave-browser", "--no-sandbox", "--app=https://example.com"]
-          # --no-sandbox é obrigatório: o contêiner sempre roda como root (é
-          # isso que dá a ele acesso total aos dispositivos), e o Chromium se
-          # recusa a rodar sua própria sandbox como root.
+          cmd: ["/usr/bin/brave-browser", "--app=https://example.com"]
 
 supervision:
   name:       Supervision
