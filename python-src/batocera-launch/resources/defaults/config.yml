@@ -108,14 +108,14 @@ c64:
   emulator: libretro
   core:     vice_x64
 cplus4:
-  emulator: vice
-  core:     xplus4
+  emulator: libretro
+  core:     vice_xplus4
 c128:
-  emulator: vice
-  core:     x128
+  emulator: libretro
+  core:     vice_x128
 c20:
-  emulator: vice
-  core:     xvic
+  emulator: libretro
+  core:     vice_xvic
 camplynx:
   emulator: libretro
   core:     mame
@@ -444,11 +444,11 @@ multivision:
   emulator: libretro
   core:     gearsystem
 n64:
-  emulator: mupen64plus
-  core:     glide64mk2
+  emulator: libretro
+  core:     mupen64plus-next
 n64dd:
-  emulator: mupen64plus
-  core:     glide64mk2
+  emulator: libretro
+  core:     mupen64plus-next
 namco22:
   emulator: libretro
   core:     mame
@@ -536,8 +536,8 @@ pdp1:
   emulator: libretro
   core:     mame
 pet:
-  emulator: vice
-  core:     xpet
+  emulator: libretro
+  core:     vice_xpet
 pico:
   emulator: libretro
   core:     genesisplusgx
