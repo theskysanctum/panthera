@@ -72,6 +72,26 @@ stop() {
 	podman stop "$CONTAINER_NAME" >/dev/null 2>&1
 }
 
+# show/hide raise or unmap the already-running container's window, for the pause overlay's
+# "Open" action (see pause_overlay.py) - never start a second limusic-app, since the one
+# background instance already owns the MPRIS name limusic_control.py talks to.
+show() {
+	export XAUTHORITY=/var/lib/.Xauthority
+	export DISPLAY=:0
+	WIN=$(xdotool search --class limusic-app 2>/dev/null | head -1)
+	if [ -n "$WIN" ]; then
+		xdotool windowmap "$WIN"
+		xdotool windowactivate "$WIN"
+	fi
+}
+
+hide() {
+	export XAUTHORITY=/var/lib/.Xauthority
+	export DISPLAY=:0
+	WIN=$(xdotool search --class limusic-app 2>/dev/null | head -1)
+	[ -n "$WIN" ] && xdotool windowunmap "$WIN"
+}
+
 restart() {
 	stop
 	start
@@ -86,8 +106,10 @@ case "$1" in
 	stop) stop ;;
 	restart) restart ;;
 	status) status ;;
+	show) show ;;
+	hide) hide ;;
 	*)
-		echo "Usage: $0 {start|stop|restart|status}"
+		echo "Usage: $0 {start|stop|restart|status|show|hide}"
 		exit 1
 		;;
 esac

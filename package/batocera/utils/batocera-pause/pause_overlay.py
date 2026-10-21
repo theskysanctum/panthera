@@ -10,11 +10,13 @@ resuming. Music opens a sub-view that controls the background Limusic player (se
 limusic_control.py) rather than resuming or quitting anything.
 
 Writes its result ("resume" or "quit") to the given file path and exits."""
+import subprocess
 import sys
 
 import pygame
 
 import limusic_control
+from pause_supervisor import find_pause_input_devices, wait_for_pause_press
 
 BG = (20, 20, 24)
 FG = (235, 235, 235)
@@ -23,6 +25,27 @@ SEL_BG = (60, 90, 170)
 
 MUSIC_POLL_MS = 1000
 ART_SIZE = 160
+
+LIMUSIC_SERVICE = "/usr/share/batocera/services/limusic"
+OVERLAY_WINDOW_NAME = "batocera-pause-overlay"
+
+
+def _open_limusic_window():
+    """Raises Limusic's own window on top of this one (see the "limusic" service's show/hide
+    subcommands) and blocks until the pause button/Home key is pressed again, then hides it and
+    refocuses this window.
+
+    Once Limusic has X focus, this process's own pygame event loop stops receiving key presses -
+    so the wait below reuses pause_supervisor's raw evdev read of the pause button itself, the
+    same one that works regardless of which window currently has focus. Like pause_supervisor's
+    own "share the display with a merely-frozen process" assumption (see its module docstring),
+    getting keyboard focus back afterwards via xdotool windowactivate, with no window manager
+    running, is the one part of this that hasn't been exercised on real hardware.
+    """
+    subprocess.run([LIMUSIC_SERVICE, "show"], check=False)
+    wait_for_pause_press(find_pause_input_devices(), lambda: True)
+    subprocess.run([LIMUSIC_SERVICE, "hide"], check=False)
+    subprocess.run(["xdotool", "search", "--name", OVERLAY_WINDOW_NAME, "windowactivate"], check=False)
 
 
 def main():
@@ -33,6 +56,7 @@ def main():
 
     pygame.init()
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+    pygame.display.set_caption(OVERLAY_WINDOW_NAME)
     pygame.mouse.set_visible(False)
     font = pygame.font.Font(None, 40)
     hint_font = pygame.font.Font(None, 24)
@@ -43,7 +67,7 @@ def main():
     clock = pygame.time.Clock()
     result = "resume"
 
-    music_options = ["Previous", "Play/Pause", "Next", "Back"]
+    music_options = ["Previous", "Play/Pause", "Next", "Open", "Back"]
     music_selected = 1  # start on Play/Pause
     music_meta = None
     music_art_surface = None
@@ -84,6 +108,8 @@ def main():
                             limusic_control.play_pause()
                         elif choice == "Next":
                             limusic_control.next_track()
+                        elif choice == "Open":
+                            _open_limusic_window()
                         elif choice == "Back":
                             view = "main"
                     elif event.key == pygame.K_ESCAPE:
@@ -139,11 +165,13 @@ def main():
             else:
                 screen.blit(hint_font.render("Limusic isn't available right now.", True, DIM), (center_x - 200, text_y))
             controls_y = text_y + 80
+            slot_w = 150
             for i, label in enumerate(music_options):
                 color = SEL_BG if i == music_selected else BG
-                rect = pygame.Rect(center_x - 300 + i * 160, controls_y, 140, 50)
+                x = center_x - (len(music_options) * slot_w) // 2 + i * slot_w
+                rect = pygame.Rect(x, controls_y, 130, 50)
                 pygame.draw.rect(screen, color, rect)
-                screen.blit(hint_font.render(label, True, FG), (rect.x + 15, rect.y + 15))
+                screen.blit(hint_font.render(label, True, FG), (rect.x + 10, rect.y + 15))
             screen.blit(hint_font.render("Left/Right: choose   Enter: select   Escape: back", True, DIM), (center_x - 220, controls_y + 80))
         else:
             heading = "Quit?" if view == "quit_confirm" else "Paused"

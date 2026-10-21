@@ -5,7 +5,7 @@
 ################################################################################
 
 LIMUSIC_SOURCE =
-LIMUSIC_DEPENDENCIES = podman
+LIMUSIC_DEPENDENCIES = podman xdotool
 
 LIMUSIC_CONTAINER_DIR = $(BR2_EXTERNAL_BATOCERA_PATH)/containers/desktop-apps
 LIMUSIC_IMAGE_TAR = $(@D)/desktop-apps.tar
