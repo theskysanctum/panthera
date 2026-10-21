@@ -1902,6 +1902,32 @@ ports:
      Aqui você pode encontrar jogos e aplicativos para Linux, iniciados via scripts shell que terminam em
      ".sh". Apenas os scripts ".sh" aparecem no EmulationStation.
 
+other:
+  name:       Other Environments
+  manufacturer: Various
+  release:
+  hardware: computer
+  file_extensions: [qcow2, img, raw, iso]
+  platform: pc
+  comment_en: |
+    ## OTHER ENVIRONMENTS ##
+    -------------------------------------------------------------------------------
+    Full-system virtual machines, run via QEMU. Use this for other operating
+    systems and legacy software with no native or emulated path elsewhere:
+    boot a disk image (qcow2/img/raw) directly, or an ISO to install one.
+  comment_fr: |
+    ## AUTRES ENVIRONNEMENTS ##
+    -------------------------------------------------------------------------------
+    Machines virtuelles complètes, lancées via QEMU. À utiliser pour d'autres
+    systèmes d'exploitation et logiciels sans chemin natif ou émulé ailleurs :
+    démarrez une image disque (qcow2/img/raw), ou un ISO pour en installer une.
+  comment_br: |
+    ## OUTROS AMBIENTES ##
+    -------------------------------------------------------------------------------
+    Máquinas virtuais completas, executadas via QEMU. Use para outros sistemas
+    operacionais e softwares sem caminho nativo ou emulado em outro lugar:
+    inicie uma imagem de disco (qcow2/img/raw), ou um ISO para instalar uma.
+
 halflife:
   name: Half-Life 1
   manufacturer: Ports

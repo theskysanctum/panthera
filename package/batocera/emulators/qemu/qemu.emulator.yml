@@ -1,0 +1,54 @@
+shared_features:
+  - powermode
+  - cpucluster
+  - tdp
+  - platformprofile
+  - videomode
+custom_features:
+  qemu_accel:
+    prompt: ACCELERATION
+    description: KVM gives near-native speed but needs hardware virtualization support; falls back to TCG software emulation otherwise.
+    choices:
+      Auto (Default): auto
+      KVM: kvm
+      TCG (software): tcg
+  qemu_ram:
+    group: ADVANCED OPTIONS
+    prompt: MEMORY
+    description: RAM allocated to the virtual machine.
+    choices:
+      512 MB: 512
+      1 GB: 1024
+      2 GB (Default): 2048
+      4 GB: 4096
+      8 GB: 8192
+  qemu_cpus:
+    group: ADVANCED OPTIONS
+    prompt: CPU CORES
+    choices:
+      1: 1
+      2 (Default): 2
+      4: 4
+      8: 8
+  qemu_display:
+    group: ADVANCED OPTIONS
+    prompt: DISPLAY ADAPTER
+    description: Which virtual graphics card to present to the guest.
+    choices:
+      Standard VGA (Default): std
+      VirtIO GPU: virtio
+      QXL (SPICE): qxl
+      Cirrus: cirrus
+  qemu_boot:
+    prompt: BOOT FROM
+    description: Boot the disk image directly, or the attached ISO (e.g. to install an OS onto the disk image).
+    choices:
+      Disk image (Default): disk
+      CD-ROM / ISO: cdrom
+file_extensions:
+  - qcow2
+  - img
+  - raw
+  - iso
+systems:
+  - other

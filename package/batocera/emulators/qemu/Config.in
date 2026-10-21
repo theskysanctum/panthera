@@ -1,0 +1,13 @@
+config BR2_PACKAGE_BATOCERA_QEMU
+	bool "qemu"
+	select BR2_PACKAGE_QEMU
+	select BR2_PACKAGE_QEMU_SYSTEM
+	select BR2_PACKAGE_QEMU_SDL
+	select BR2_PACKAGE_QEMU_SLIRP
+	select BR2_PACKAGE_QEMU_TOOLS
+	help
+	  Run other operating systems and legacy platforms in a full
+	  system virtual machine, via QEMU (KVM-accelerated when available,
+	  falling back to software emulation otherwise).
+
+	  https://www.qemu.org/

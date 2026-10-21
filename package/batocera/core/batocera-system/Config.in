@@ -1071,6 +1071,8 @@ config BR2_PACKAGE_BATOCERA_HOMEBREW_SYSTEMS
 	# Fighting games engine
 	select BR2_PACKAGE_IKEMEN		if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 
+	# Other Environments : full-system virtualization
+	select BR2_PACKAGE_BATOCERA_QEMU	if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 
 	# SMBX engine
 	select BR2_PACKAGE_THEXTECH

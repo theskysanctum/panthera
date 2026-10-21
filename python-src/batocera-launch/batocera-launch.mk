@@ -67,6 +67,7 @@ BATOCERA_LAUNCH_LOCAL_PYTHON_EXCLUSIONS = \
 		$(if $(BR2_PACKAGE_PPSSPP),,ppsspp.py) \
 		$(if $(BR2_PACKAGE_BATOCERA_PYGAME),,pygame.py) \
 		$(if $(BR2_PACKAGE_PYTHON_PYXEL),,pyxel.py) \
+		$(if $(BR2_PACKAGE_BATOCERA_QEMU),,qemu.py) \
 		$(if $(BR2_PACKAGE_RAZE),,raze.py) \
 		$(if $(BR2_PACKAGE_REDREAM),,redream.py) \
 		$(if $(BR2_PACKAGE_RUFFLE),,ruffle.py) \
