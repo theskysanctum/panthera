@@ -1075,6 +1075,9 @@ config BR2_PACKAGE_BATOCERA_HOMEBREW_SYSTEMS
 	# container_apps : OCI desktop apps (openbox/picom/Brave) via podman
 	select BR2_PACKAGE_BATOCERA_PODMAN	if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 
+	# limusic : background music (replaces EmulationStation's own, see es-background-musics)
+	select BR2_PACKAGE_LIMUSIC		if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
+
 	# SMBX engine
 	select BR2_PACKAGE_THEXTECH
 

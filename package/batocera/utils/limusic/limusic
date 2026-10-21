@@ -1,0 +1,93 @@
+#!/bin/bash
+# Runs Limusic (desktop YouTube Music client, see
+# https://github.com/SimoHypers/limusic) in the background as a
+# batocera-service, replacing EmulationStation's own bundled background
+# music (see es-background-musics / audio.bgmusic in batocera.conf).
+#
+# Limusic is Tauri + WebKitGTK + libmpv - too heavy a native dependency
+# chain to cross-compile into the Buildroot target directly (same reason
+# Brave runs this way - see container_apps), so it runs inside the
+# shared desktop-apps OCI image via podman, exactly like a Brave
+# ".capp" shortcut would, just started here instead of through an ES
+# ROM launch. The image itself was built at image-build time (see
+# limusic.mk) and embedded as a tarball rather than needing a manual
+# `podman build` or network access on the device.
+#
+# The window is started then immediately unmapped rather than left on
+# top of EmulationStation - Limusic's own system tray support keeps
+# playback running regardless of whether its window is mapped, and the
+# pause overlay's own Music view (see limusic_control.py) controls it
+# over D-Bus/MPRIS from here on, not through the window itself.
+
+. /etc/profile.d/xdg.sh
+. /etc/profile.d/dbus.sh
+
+CONTAINER_NAME=limusic
+IMAGE=desktop-apps:latest
+IMAGE_TAR=/usr/share/batocera/containers/desktop-apps.tar
+LOG=/userdata/system/logs/limusic.log
+
+ensure_image() {
+	podman image exists "$IMAGE" || podman load -i "$IMAGE_TAR"
+}
+
+start() {
+	export HOME=/userdata/system
+	export XAUTHORITY=/var/lib/.Xauthority
+	export DISPLAY=:0
+
+	ensure_image
+
+	podman rm -f "$CONTAINER_NAME" >/dev/null 2>&1
+
+	podman run -d --rm --name "$CONTAINER_NAME" \
+		--privileged --network host --ipc host --pid host \
+		-v /dev:/dev \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v /run/dbus:/run/dbus \
+		-v /run/user:/run/user \
+		-v "$XAUTHORITY:$XAUTHORITY" \
+		-e "DISPLAY=$DISPLAY" \
+		-e "XAUTHORITY=$XAUTHORITY" \
+		-e "DBUS_SESSION_BUS_ADDRESS=$DBUS_SESSION_BUS_ADDRESS" \
+		"$IMAGE" limusic-app >>"$LOG" 2>&1
+
+	# Give the window a few seconds to map, then unmap it - a no-op if
+	# it never shows up (e.g. still starting), since the next thing
+	# that uses the display just draws over an unmapped/not-yet-mapped
+	# window either way.
+	(
+		for _ in $(seq 1 20); do
+			WIN=$(xdotool search --class limusic-app 2>/dev/null | head -1)
+			if [ -n "$WIN" ]; then
+				xdotool windowunmap "$WIN"
+				break
+			fi
+			sleep 0.5
+		done
+	) &
+}
+
+stop() {
+	podman stop "$CONTAINER_NAME" >/dev/null 2>&1
+}
+
+restart() {
+	stop
+	start
+}
+
+status() {
+	podman ps --filter "name=$CONTAINER_NAME" --format '{{.Names}}' | grep -qx "$CONTAINER_NAME"
+}
+
+case "$1" in
+	start) start ;;
+	stop) stop ;;
+	restart) restart ;;
+	status) status ;;
+	*)
+		echo "Usage: $0 {start|stop|restart|status}"
+		exit 1
+		;;
+esac

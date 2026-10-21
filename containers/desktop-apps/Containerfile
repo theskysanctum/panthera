@@ -31,6 +31,24 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
+# Limusic (desktop YouTube Music client, Tauri + WebKitGTK + libmpv - see
+# https://github.com/SimoHypers/limusic) only ships upstream as a GitHub
+# Release asset (no apt repo of its own, unlike Brave), so it's fetched and
+# installed directly - pinned to a specific release + checksum rather than
+# "latest" so this image is reproducible. apt installs its declared deps
+# (libwebkit2gtk-4.1-0, libmpv2, libayatana-appindicator3-1, libgtk-3-0)
+# itself via `apt-get install ./file.deb`.
+RUN <<EOF
+apt-get update -y
+curl -fsSL -o /tmp/limusic.deb \
+    https://github.com/SimoHypers/limusic/releases/download/v1.3.0/limusic_1.3.0_amd64.deb
+echo "e39385242bc54d873bce6ec40ee2f6894b54ea0cad7268d1ace1da480a157a77  /tmp/limusic.deb" | sha256sum -c -
+apt-get install -y --no-install-recommends /tmp/limusic.deb
+rm -f /tmp/limusic.deb
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+EOF
+
 # Brave (and GUI apps generally) refuse their own sandbox when running as
 # root, which is why these used to need --no-sandbox. Running the app as a
 # real non-root user avoids that instead of working around it - entrypoint.sh
