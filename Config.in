@@ -422,6 +422,7 @@ menu "Emulators"
     source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/emulators/pcsx2x6/Config.in"
     source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/emulators/gametank-emulator/Config.in"
     source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/emulators/qemu/Config.in"
+    source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/emulators/qemu/virtio-win-guest-tools/Config.in"
   endmenu
 
   menu "ports"

@@ -5,6 +5,7 @@ config BR2_PACKAGE_BATOCERA_QEMU
 	select BR2_PACKAGE_QEMU_SDL
 	select BR2_PACKAGE_QEMU_SLIRP
 	select BR2_PACKAGE_QEMU_TOOLS
+	select BR2_PACKAGE_VIRTIO_WIN_GUEST_TOOLS
 	help
 	  Run other operating systems and legacy platforms in a full
 	  system virtual machine, via QEMU (KVM-accelerated when available,

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_VIRTIO_WIN_GUEST_TOOLS
+	bool "virtio-win-guest-tools"
+	help
+	  The official VirtIO-Win "Guest Tools" installers (virtio-win-gt-x64.msi
+	  and virtio-win-gt-x86.msi): VirtIO drivers plus the QEMU guest agent and
+	  SPICE vdagent, bundled for one-click install inside a Windows guest.
+	  Exposed to Windows VMs as a small virtual USB drive by the qemu
+	  launcher.
+
+	  https://github.com/virtio-win/kvm-guest-drivers-windows

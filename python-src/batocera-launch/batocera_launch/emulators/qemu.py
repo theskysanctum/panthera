@@ -42,6 +42,11 @@ _RAW_EXTENSIONS: Final = {'.img', '.raw'}
 # either), AHCI (inbox since Vista) for 7/10. Anything else defaults to virtio.
 _CORE_DISK_BUS: Final = {'winxp': 'ide', 'win7': 'ahci', 'win10': 'ahci'}
 
+# Guest Tools MSIs (VirtIO drivers + qemu-guest-agent + SPICE vdagent), exposed
+# to Windows guests as a small virtual USB drive so they can be installed
+# without needing a second virtual disk/ISO.
+_GUEST_TOOLS_DIR: Final = Path('/usr/share/batocera/qemu/guest-tools')
+
 
 def _kvm_available() -> bool:
     return _KVM_DEVICE.exists() and os.access(_KVM_DEVICE, os.R_OK | os.W_OK)
@@ -55,6 +60,15 @@ def _disk_args(bus: str, path: Path, disk_format: str, drive_id: str, /) -> list
             '-device', f'ide-hd,bus={drive_id}-ahci.0,drive={drive_id}',
         ]
     return ['-drive', f'file={path},if={bus},format={disk_format}']
+
+
+def _guest_tools_args(core: str, /) -> list[str | Path]:
+    if core not in _CORE_DISK_BUS:
+        return []
+    return [
+        '-drive', f'file=fat:ro:{_GUEST_TOOLS_DIR},format=raw,if=none,id=guesttools',
+        '-device', 'usb-storage,drive=guesttools',
+    ]
 
 
 @cached_dataclass
@@ -94,6 +108,7 @@ class Qemu(Emulator):
             args.append('-enable-kvm')
 
         bus = _CORE_DISK_BUS.get(self.core, 'virtio')
+        args += _guest_tools_args(self.core)
 
         if self.system == 'os_install':
             disk = _INSTALLED_DISKS_DIR / f'{self.rom.stem}.qcow2'
