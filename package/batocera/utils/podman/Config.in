@@ -1,0 +1,11 @@
+config BR2_PACKAGE_BATOCERA_PODMAN
+	bool "podman"
+	select BR2_PACKAGE_PODMAN
+	help
+	  Run OCI container images (rootful) as a way to get full Linux
+	  desktop apps - with their own library stack - without touching the
+	  read-only system image. Used by the "container_apps" system to run
+	  a shared desktop-apps image (openbox + picom + Brave) with USB,
+	  Bluetooth, webcam, GPU and network passthrough.
+
+	  https://podman.io/

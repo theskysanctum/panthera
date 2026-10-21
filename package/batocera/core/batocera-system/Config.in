@@ -1072,6 +1072,9 @@ config BR2_PACKAGE_BATOCERA_HOMEBREW_SYSTEMS
 	# Other Environments : full-system virtualization
 	select BR2_PACKAGE_BATOCERA_QEMU	if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
 
+	# container_apps : OCI desktop apps (openbox/picom/Brave) via podman
+	select BR2_PACKAGE_BATOCERA_PODMAN	if BR2_PACKAGE_BATOCERA_TARGET_X86_64_ANY
+
 	# SMBX engine
 	select BR2_PACKAGE_THEXTECH
 

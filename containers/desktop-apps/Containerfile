@@ -1,0 +1,36 @@
+FROM ubuntu:24.04
+SHELL ["/bin/bash", "-c"]
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Brave's own repo, since Ubuntu doesn't package it.
+RUN <<EOF
+apt-get update -y
+apt-get install -y --no-install-recommends ca-certificates curl gnupg
+curl -fsSL https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg \
+    -o /usr/share/keyrings/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" \
+    > /etc/apt/sources.list.d/brave-browser-release.list
+EOF
+
+RUN <<EOF
+apt-get update -y
+apt-get install -y --no-install-recommends \
+    brave-browser \
+    openbox \
+    picom \
+    x11-xserver-utils \
+    fonts-liberation \
+    mesa-va-drivers \
+    mesa-vulkan-drivers \
+    libgl1-mesa-dri \
+    libpulse0
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+EOF
+
+COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY picom.conf /etc/xdg/picom.conf
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/bin/brave-browser"]

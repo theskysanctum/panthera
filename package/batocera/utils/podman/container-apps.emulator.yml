@@ -1,0 +1,8 @@
+shared_features:
+  - powermode
+  - cpucluster
+  - videomode
+file_extensions:
+  - capp
+systems:
+  - container_apps

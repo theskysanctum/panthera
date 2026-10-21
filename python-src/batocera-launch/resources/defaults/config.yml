@@ -163,6 +163,9 @@ colecovision:
 commanderx16:
   emulator: x16emu
   core:     x16emu
+container_apps:
+  emulator: container_apps
+  core:     container_apps
 corsixth:
   emulator: corsixth
   core:     corsixth

@@ -32,6 +32,7 @@ BATOCERA_LAUNCH_LOCAL_PYTHON_EXCLUSIONS = \
 		$(if $(BR2_PACKAGE_CATACOMBGL),,catacombgl.py) \
 		$(if $(BR2_PACKAGE_CEMU),,cemu.py) \
 		$(if $(BR2_PACKAGE_CLK),,clk.py) \
+		$(if $(BR2_PACKAGE_BATOCERA_PODMAN),,container_apps.py) \
 		$(if $(BR2_PACKAGE_CORSIXTH),,corsixth.py) \
 		$(if $(BR2_PACKAGE_DEVILUTIONX),,devilutionx.py) \
 		$(if $(BR2_PACKAGE_DHEWM3),,dhewm3.py) \
