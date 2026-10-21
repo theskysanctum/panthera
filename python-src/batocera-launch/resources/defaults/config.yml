@@ -513,10 +513,10 @@ oricatmos:
   core:     mame
 os_hdds:
   emulator: qemu
-  core:     qemu
+  core:     other
 os_install:
   emulator: qemu
-  core:     qemu
+  core:     other
 
 # P-S
 

@@ -37,9 +37,24 @@ _INSTALLED_DISKS_DIR: Final = ROMS / 'os_hdds'
 _DISK_SIZE: Final = '32G'
 _RAW_EXTENSIONS: Final = {'.img', '.raw'}
 
+# Windows has no inbox virtio-blk driver, so installs need a bus their
+# installer media can actually see: plain IDE for XP (no inbox AHCI driver
+# either), AHCI (inbox since Vista) for 7/10. Anything else defaults to virtio.
+_CORE_DISK_BUS: Final = {'winxp': 'ide', 'win7': 'ahci', 'win10': 'ahci'}
+
 
 def _kvm_available() -> bool:
     return _KVM_DEVICE.exists() and os.access(_KVM_DEVICE, os.R_OK | os.W_OK)
+
+
+def _disk_args(bus: str, path: Path, disk_format: str, drive_id: str, /) -> list[str | Path]:
+    if bus == 'ahci':
+        return [
+            '-device', f'ahci,id={drive_id}-ahci',
+            '-drive', f'if=none,id={drive_id},file={path},format={disk_format}',
+            '-device', f'ide-hd,bus={drive_id}-ahci.0,drive={drive_id}',
+        ]
+    return ['-drive', f'file={path},if={bus},format={disk_format}']
 
 
 @cached_dataclass
@@ -78,19 +93,18 @@ class Qemu(Emulator):
         if accel == 'kvm':
             args.append('-enable-kvm')
 
+        bus = _CORE_DISK_BUS.get(self.core, 'virtio')
+
         if self.system == 'os_install':
             disk = _INSTALLED_DISKS_DIR / f'{self.rom.stem}.qcow2'
             if not disk.exists():
                 disk.parent.mkdir(parents=True, exist_ok=True)
                 await run(_QEMU_IMG_BIN, 'create', '-f', 'qcow2', disk, _DISK_SIZE)
 
-            args += [
-                '-cdrom', self.rom,
-                '-drive', f'file={disk},if=virtio,format=qcow2',
-                '-boot', 'order=d',
-            ]
+            args += ['-cdrom', self.rom, '-boot', 'order=d']
+            args += _disk_args(bus, disk, 'qcow2', 'osdisk')
         else:
             disk_format = 'raw' if self.rom.suffix.lower() in _RAW_EXTENSIONS else 'qcow2'
-            args += ['-drive', f'file={self.rom},if=virtio,format={disk_format}']
+            args += _disk_args(bus, self.rom, disk_format, 'osdisk')
 
         return Command(args)

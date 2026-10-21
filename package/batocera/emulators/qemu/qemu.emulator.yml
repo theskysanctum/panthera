@@ -41,9 +41,19 @@ custom_features:
       Cirrus: cirrus
 systems:
   - name: os_install
+    as_core:
+      - other
+      - winxp
+      - win7
+      - win10
     file_extensions:
       - iso
   - name: os_hdds
+    as_core:
+      - other
+      - winxp
+      - win7
+      - win10
     file_extensions:
       - qcow2
       - img
