@@ -40,12 +40,22 @@ sudo podman run --rm -it --privileged \
     -v ./output:/output \
     -v /var/lib/containers/storage:/var/lib/containers/storage \
     quay.io/centos-bootc/bootc-image-builder:latest \
-    --type raw --local desktop-apps-bootc:latest
+    --type qcow2 --rootfs xfs --local desktop-apps-bootc:latest
 ```
 
-The result lands at `output/image/disk.raw` - write it to a drive with
-`dd` (or an imaging tool like Raspberry Pi Imager/balenaEtcher) and boot
-it directly into the kiosk session, no installer step needed.
+The result lands at `output/qcow2/disk.qcow2` - boot it directly with
+QEMU/KVM (`-drive file=output/qcow2/disk.qcow2,format=qcow2,if=virtio`),
+or convert it to a flashable raw disk first if you need to write it to
+physical media:
+
+```sh
+qemu-img convert -O raw output/qcow2/disk.qcow2 output/disk.raw
+```
+
+`--type qcow2` instead of `--type raw` keeps the build output small
+enough to pass around (qcow2's own sparse+compressed format vs. a 10GB
+raw file) - this isn't something that belongs in git either way (not
+committed, see `.gitignore`), just a local build artifact.
 
 ## Design notes
 
