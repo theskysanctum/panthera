@@ -80,3 +80,14 @@ COPY kiosk.service /usr/lib/systemd/system/kiosk.service
 RUN sed -i "s|@KIOSK_CMD@|${KIOSK_CMD}|" /etc/kiosk/xinitrc && \
     systemctl enable kiosk.service && \
     systemctl set-default multi-user.target
+
+# kiosk.service's User=/PAMName=login combo gives it a full unconfined_t
+# login-session context (needed for the logind session that makes
+# TTYPath/startx work at all), and SELinux's targeted policy doesn't allow
+# that context to enter startx's initrc_exec_t label as an entrypoint -
+# confirmed by booting this image: startx got killed outright with an AVC
+# denial before the kiosk session ever started. Same "not a security
+# boundary, single-purpose appliance" call as container_apps/desktop-apps
+# - permissive rather than chasing every AVC denial Chromium's sandboxing
+# and X's own privilege transitions are likely to keep tripping.
+RUN sed -i 's/^SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
