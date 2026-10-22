@@ -140,6 +140,31 @@ define BATOCERA_EMULATIONSTATION_THEME_LOCK
 	$(SED) 's|s->addSubMenu(_("THEME CONFIGURATION"), \[this, s, theme_set\]() { openThemeConfiguration(mWindow, s, theme_set); });|s->addSubMenu(_("THEME CONFIGURATION"), [this, s]() { openThemeConfiguration(mWindow, s, nullptr); });|' $(@D)/es-app/src/guis/GuiMenu.cpp
 endef
 
+# Panthera only ever scrapes from IGDB - ScreenScraper, TheGamesDB and HfsDB were already compiled
+# out by default (they're gated behind #ifdef SCREENSCRAPER_DEV_LOGIN/GAMESDB_APIKEY/HFS_DEV_LOGIN,
+# none of which this build defines - see the keys.txt lookups above), but ArcadeDB wasn't, and
+# nothing stopped a future keys.txt from quietly reviving the other three. Strip all four out of
+# Scraper::scrapers outright instead of relying on that, so IGDB is the only engine that can ever
+# be registered. The ACCOUNTS tab's ScreenScraper username/password fields go too, since there's no
+# scraper left that reads them; the matching IGDB client id/secret fields stay. Settings.cpp's
+# default "Scraper" value flips from "ScreenScraper" to "IGDB" so a fresh install has a working
+# scraper selected without the user needing to open SCRAPER settings first (GuiScraperStart already
+# falls back to the first registered engine if the saved one has "vanished", but that only happens
+# once the scraper menu itself is opened).
+define BATOCERA_EMULATIONSTATION_IGDB_ONLY
+	$(SED) '/^#include "ArcadeDBJSONScraper.h"$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#include "GamesDBJSONScraper.h"$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#include "ScreenScraper.h"$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#include "HfsDBScraper.h"$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#ifdef SCREENSCRAPER_DEV_LOGIN$$/,/^#endif$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#ifdef GAMESDB_APIKEY$$/,/^#endif$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^#ifdef HFS_DEV_LOGIN$$/,/^#endif$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^\t{ "ArcadeDB", new ArcadeDBScraper() }$$/d' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) 's|^\t{ "IGDB", new IGDBScraper() },$$|\t{ "IGDB", new IGDBScraper() }|' $(@D)/es-app/src/scrapers/Scraper.cpp
+	$(SED) '/^\taddGroup(_("SCREENSCRAPER"));$$/,/^\taddInputTextConfigRow(_("PASSWORD"), "ScreenScraperPass", true, true);$$/d' $(@D)/es-app/src/guis/GuiScraperStart.cpp
+	$(SED) 's|mStringMap\["Scraper"\] = "ScreenScraper";|mStringMap["Scraper"] = "IGDB";|' $(@D)/es-core/src/Settings.cpp
+endef
+
 define BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 	cp $(STAGING_DIR)/usr/share/batocera-es-system/es_external_translations.h \
 	    $(STAGING_DIR)/usr/share/batocera-es-system/es_keys_translations.h $(@D)/es-app/src
@@ -263,6 +288,7 @@ BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_RPI_F
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_STREMIO_MENU
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_THEME_LOCK
+BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_IGDB_ONLY
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_RESOURCES
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_BOOT
