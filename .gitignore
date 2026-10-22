@@ -35,3 +35,4 @@ typescript
 .ruff_cache
 .coverage
 *.mo
+*.qcow2
