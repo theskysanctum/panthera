@@ -1,0 +1,3 @@
+#!/bin/sh
+# script to be called from es to call batocera-launch + stremio
+batocera-launch -system container_apps -rom /usr/share/batocera/stremio.yml "$@"

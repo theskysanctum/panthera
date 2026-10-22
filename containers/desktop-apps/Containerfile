@@ -49,6 +49,82 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
+# Stremio (the next-gen media center, replacing Kodi on this fork - see
+# https://github.com/Stremio/stremio-shell) also only ships as a GitHub
+# Release .deb, pinned + checksummed the same way as Limusic above. Unlike
+# Limusic, its declared deps don't quite work as-is on 24.04:
+#   - it depends on libmpv1, which no longer exists here (only libmpv2,
+#     which is ABI-compatible) - apt won't resolve a bare symlink as
+#     satisfying a dependency, so a tiny equivs stub registers "libmpv1"
+#     in dpkg's own database and the symlink then makes it actually work
+#     at the dynamic-linker level.
+#   - it also links libcrypto.so.1.1 (OpenSSL 1.1) without declaring it,
+#     and 24.04 only ships OpenSSL 3.x, which isn't ABI-compatible - so
+#     this one needs a real historical libssl1.1 .deb, not a symlink.
+#   - its postinst runs xdg-desktop-menu/xdg-icon-resource, which need
+#     xdg-utils and a couple of directories this base image doesn't
+#     create on its own.
+RUN <<EOF
+apt-get update -y
+apt-get install -y --no-install-recommends \
+    xdg-utils \
+    hicolor-icon-theme \
+    libmpv2 \
+    nodejs \
+    qml-module-qt-labs-platform \
+    qml-module-qtquick-controls \
+    qml-module-qtquick-dialogs \
+    qml-module-qtwebchannel \
+    qml-module-qtwebengine \
+    qml-module-qt-labs-folderlistmodel \
+    qml-module-qt-labs-settings \
+    libfdk-aac2 \
+    librubberband2 \
+    libuchardet0 \
+    equivs
+
+ln -sf /usr/lib/x86_64-linux-gnu/libmpv.so.2 /usr/lib/x86_64-linux-gnu/libmpv.so.1
+ldconfig
+
+cat > /tmp/libmpv1-shim.ctl <<CTL
+Section: libs
+Priority: optional
+Standards-Version: 3.9.2
+
+Package: libmpv1
+Version: 999:0.37.0
+Maintainer: Panthera <noreply@panthera>
+Architecture: amd64
+Description: transitional dummy satisfying the real libmpv.so.1 -> libmpv.so.2 symlink
+CTL
+( cd /tmp && equivs-build libmpv1-shim.ctl )
+dpkg -i /tmp/libmpv1_*.deb
+rm -f /tmp/libmpv1-shim.ctl /tmp/libmpv1_*.deb
+
+curl -fsSL -o /tmp/libssl1.1.deb \
+    http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
+echo "7cf39d70a639017d1dd7c8d36daa2258063608688e449fddf40ffdd46f992a78  /tmp/libssl1.1.deb" | sha256sum -c -
+dpkg -i /tmp/libssl1.1.deb
+rm -f /tmp/libssl1.1.deb
+
+mkdir -p /usr/share/applications /usr/share/icons/hicolor
+
+curl -fsSL -o /tmp/stremio.deb \
+    https://dl.strem.io/shell-linux/v4.4.168/stremio_4.4.168-1_amd64.deb
+echo "1028f1a38a70fc66bfcda1c8a9e1674231e17ac81774fc48859ed8f53c7a6039  /tmp/stremio.deb" | sha256sum -c -
+apt-get install -y --no-install-recommends /tmp/stremio.deb
+rm -f /tmp/stremio.deb
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
+# Stremio runs as the home-screen replacement launched from ES's own HOME
+# menu (see batocera-stremio) - openbox's default rc.xml has no per-app
+# rules at all, so give it one real one (everything else stays upstream
+# default) telling openbox not to draw window decorations around it.
+sed -i 's|</applications>|  <application name="stremio">\n    <decor>no</decor>\n  </application>\n</applications>|' \
+    /etc/xdg/openbox/rc.xml
+EOF
+
 # Brave (and GUI apps generally) refuse their own sandbox when running as
 # root, which is why these used to need --no-sandbox. Running the app as a
 # real non-root user avoids that instead of working around it - entrypoint.sh

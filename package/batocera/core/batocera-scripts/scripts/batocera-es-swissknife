@@ -95,18 +95,6 @@ case ${1,,} in
         fi
     ;;
 
-    --kodi)
-        [[ $(check_emurun) -ne 0 ]] && emu_kill
-
-        /etc/init.d/S31emulationstation suspend
-        batocera-kodilauncher &
-        wait $!
-        ret=$?
-        [[ $ret -eq 0 ]] && /etc/init.d/S31emulationstation resume
-        [[ $ret -eq 10 ]] && shutdown -r now
-        [[ $ret -eq 11 ]] && shutdown -P -h now
-    ;;
-
     --arch)
         BOARD=$(cat /boot/boot/batocera.board  || echo "Not found!")
         [[ "${BOARD}" == "rpi4" ]] && BOARD=rpi464 # "temporarily" download on rpi464 for rpi4
@@ -153,7 +141,6 @@ case ${1,,} in
 		BATOCERA SWISS KNIFE FOR EmulationStation
 		  usage: $(basename ${0}) [Option] <Timeout in s> <butterfly>
 		  --restart       will RESTART EmulationStation only
-		  --kodi          will startup KODI Media Center stopping ES
 		  --reboot   <s>  will REBOOT whole system
 		  --shutdown <s>  will SHUTDOWN whole system
 		  --emukill  <s>  will exit any running EMULATORS

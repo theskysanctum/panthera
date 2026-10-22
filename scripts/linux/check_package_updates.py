@@ -556,15 +556,6 @@ def sinden_lightgun_latest():
     return ""
 
 
-def kodi_resources_latest(url):
-    html = fetch_url(url)
-    if html:
-        zips = re.findall(r'-([^-]+?)\.zip', html)
-        if zips:
-            return zips[-1]
-    return ""
-
-
 def uboot_multiboard_latest(url):
     html = fetch_url(url)
     if html:
@@ -1109,8 +1100,6 @@ def get_pkg_versions(pkg, props):
 
     elif "sindenlightgun" in site:
         net_version = sinden_lightgun_latest()
-    elif "mirrors.kodi.tv" in site:
-        net_version = kodi_resources_latest(site)
     elif "ftp.denx.de" in site:
         net_version = uboot_multiboard_latest(site)
     elif "busybox.net" in site:

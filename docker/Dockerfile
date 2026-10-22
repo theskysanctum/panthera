@@ -43,7 +43,6 @@ PACKAGES=(
     "locales"
     "lzip"
     "mercurial"
-    "openjdk-17-jdk-headless"  # use for kodi
     "python3"
     "rsync"
     "subversion"

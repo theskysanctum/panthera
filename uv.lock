@@ -15,7 +15,6 @@ members = [
     "batocera-launch-drastic",
     "batocera-launch-fallout",
     "batocera-launch-flycast",
-    "batocera-launch-kodi",
     "batocera-launch-libretro",
     "batocera-launch-libretro-mame",
     "batocera-launch-mame",
@@ -355,21 +354,6 @@ requires-dist = [
 name = "batocera-launch-flycast"
 version = "44.0"
 source = { editable = "python-src/batocera-launch-flycast" }
-dependencies = [
-    { name = "batocera-common" },
-    { name = "batocera-launch" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "batocera-common", editable = "python-src/python-batocera-common" },
-    { name = "batocera-launch", editable = "python-src/batocera-launch" },
-]
-
-[[package]]
-name = "batocera-launch-kodi"
-version = "44.0"
-source = { editable = "python-src/batocera-launch-kodi" }
 dependencies = [
     { name = "batocera-common" },
     { name = "batocera-launch" },

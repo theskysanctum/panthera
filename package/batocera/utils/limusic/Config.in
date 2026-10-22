@@ -3,7 +3,7 @@ config BR2_PACKAGE_LIMUSIC
 	select BR2_PACKAGE_BATOCERA_PODMAN
 	help
 	  Builds the shared desktop-apps OCI image (openbox + picom + Brave
-	  + Limusic - see containers/desktop-apps/) with the host's own
+	  + Limusic + Stremio - see containers/desktop-apps/) with the host's own
 	  podman at build time and embeds it into the rootfs, then installs
 	  a background service ("limusic") that loads the image once and
 	  launches Limusic unmapped/backgrounded - the system's background

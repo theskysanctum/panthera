@@ -34,7 +34,6 @@ if mkdir "${TMPDIR}" && mkdir "${TMPDIR}/system" \
                           "${TMPDIR}/logs" \
                           "${TMPDIR}/joysticks" \
                           "${TMPDIR}/lirc" \
-                          "${TMPDIR}/kodi" \
                           "${TMPDIR}/coredumps"
 then
     if ! cd "${TMPDIR}"
@@ -265,13 +264,6 @@ cp "/var/run/sinden/p"*"/sinden-"*".log" "${DJOYS}" 2>/dev/null
 # lirc
 DLIRC="${TMPDIR}/lirc"
 f_cp "${DHOME}/.config/lirc/lircd.conf" "${DLIRC}"
-
-# kodi
-DKODI="${TMPDIR}/kodi"
-f_cp "${DHOME}/.kodi/userdata/Lircmap.xml"          	      "${DKODI}"
-d_cp "${DHOME}/.kodi/userdata/addon_data/peripheral.joystick" "${DKODI}"
-d_cp "${DHOME}/.kodi/userdata/remotes"              	      "${DKODI}"
-f_cp "${DHOME}/.kodi/temp/kodi.log"                 	      "${DKODI}"
 
 # core dumps
 DCORE="${TMPDIR}/coredumps"

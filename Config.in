@@ -509,24 +509,6 @@ menu "Emulators"
 
 endmenu
 
-menu "Kodi"
-if BR2_PACKAGE_KODI
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-de_de/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-es_es/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-eu_es/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-fr_fr/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-it_it/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-pt_br/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-sv_se/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-tr_tr/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-zh_cn/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-resource-language-el_gr/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-pvr-freebox/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-p8-platform/Config.in"
-  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/kodi/kodi21-kodi-platform/Config.in"
-endif
-endmenu
-
 menu "Looks"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/looks/adwaita-icon-theme-light/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/looks/hypseus-singe-bezels/Config.in"
@@ -555,6 +537,7 @@ menu "Utils"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/batocera-home/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/batocera-podman/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/limusic/Config.in"
+  source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/stremio/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/x86-64-level/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/pm-utils/Config.in"
   source "$BR2_EXTERNAL_BATOCERA_PATH/package/batocera/utils/mangohud/Config.in"
@@ -752,7 +735,6 @@ source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-dolphin/Config.in
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-drastic/Config.in"
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-fallout/Config.in"
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-flycast/Config.in"
-source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-kodi/Config.in"
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-libretro/Config.in"
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-libretro-mame/Config.in"
 source "$BR2_EXTERNAL_BATOCERA_PATH/python-src/batocera-launch-mame/Config.in"

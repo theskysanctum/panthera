@@ -102,6 +102,26 @@ define BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
 	$(SED) 's|_("MAIN MENU")|_("HOME")|' $(@D)/es-app/src/guis/GuiMenu.cpp
 endef
 
+# Repoints the HOME menu's Kodi entry to Stremio (see package/batocera/utils/stremio), which
+# replaces Kodi on this fork. Rather than rename ApiSystem::launchKodi/ScriptId::KODI, this just
+# repurposes them in place - isScriptingSupported(KODI) already does a plain file-existence check
+# ("kodi" under /usr/bin), so pointing that same check at "batocera-stremio" keeps the entry
+# runtime-gated exactly like Kodi's was (hidden on targets where the desktop-apps container isn't
+# built, e.g. non-x86_64), with no new ApiSystem method or ES CMake flag needed. The entry itself
+# is pulled out of its old #ifdef _ENABLE_KODI_ guard so it no longer depends on Kodi's own
+# Buildroot package selection (gone), and the "kodi.enabled" settings toggle is dropped since
+# Stremio has no equivalent - everything else under _ENABLE_KODI_ (the startup launcher in
+# main.cpp, the "ENABLE KODI"/"LAUNCH KODI AT BOOT" settings switches) is left alone and simply
+# compiles out now that nothing selects BR2_PACKAGE_KODI/KODI21 anymore.
+define BATOCERA_EMULATIONSTATION_STREMIO_MENU
+	$(SED) '/^#ifdef _ENABLE_KODI_$$/{N;s|^#ifdef _ENABLE_KODI_\n\tif (SystemConf::getInstance()->getBool("kodi.enabled", true) && ApiSystem::getInstance()->isScriptingSupported(ApiSystem::KODI))$$|\tif (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::KODI))|}' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) 's|addEntry(_("KODI MEDIA CENTER").c_str(), false, \[this\]|addEntry(_("STREMIO").c_str(), false, [this]|' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) 's|LOG(LogWarning) << "Shutdown terminated with non-zero result!";|LOG(LogWarning) << "Stremio terminated with non-zero result!";|' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) '/^\t}, "iconKodi");$$/{N;s|}, "iconKodi");\n#endif|}, "iconKodi");|}' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) 's|executables.push_back("kodi");|executables.push_back("batocera-stremio");|' $(@D)/es-app/src/ApiSystem.cpp
+	$(SED) 's|"batocera-kodi " + commandline|"batocera-stremio " + commandline|' $(@D)/es-app/src/ApiSystem.cpp
+endef
+
 define BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 	cp $(STAGING_DIR)/usr/share/batocera-es-system/es_external_translations.h \
 	    $(STAGING_DIR)/usr/share/batocera-es-system/es_keys_translations.h $(@D)/es-app/src
@@ -233,6 +253,7 @@ endef
 
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_RPI_FIXUP
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
+BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_STREMIO_MENU
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_RESOURCES
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_BOOT

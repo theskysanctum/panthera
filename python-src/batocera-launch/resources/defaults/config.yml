@@ -347,11 +347,6 @@ jkdf2:
 jknight:
   emulator: openjk
   core:     openjk
-kodi:
-  emulator: kodi
-  options:
-    videomode: default
-    hud_support: false
 laser310:
   emulator: libretro
   core:     mame

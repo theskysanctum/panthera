@@ -1,0 +1,12 @@
+config BR2_PACKAGE_STREMIO
+	bool "stremio (media center)"
+	select BR2_PACKAGE_BATOCERA_PODMAN
+	help
+	  Installs a batocera-stremio wrapper, launched from ES's own HOME menu
+	  (where Kodi used to be - see ApiSystem::launchKodi), that runs
+	  Stremio - the next-gen media center - via the existing container_apps
+	  system inside the shared desktop-apps OCI image (openbox + picom +
+	  Brave + Limusic + Stremio - see containers/desktop-apps/) that
+	  limusic already builds, embeds and loads.
+
+	  https://github.com/Stremio/stremio-shell
