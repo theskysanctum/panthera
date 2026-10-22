@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Resume/Music/Quit window shown when the pause hotkey is pressed (see pause_supervisor.py).
-Launched as its own short-lived process while the real game's whole process tree sits SIGSTOPped -
-see pause_supervisor.py's own module docstring for the one open question about a second process
-sharing the display with a merely-frozen (not exited) one.
+"""Home: the Resume/Music/Quit window shown when the Home hotkey is pressed during a game (see
+home_supervisor.py). Launched as its own short-lived process while the real game's whole process
+tree sits SIGSTOPped - see home_supervisor.py's own module docstring for the one open question
+about a second process sharing the display with a merely-frozen (not exited) one.
+
+EmulationStation's own Start/Space menu is a separate thing (see batocera-emulationstation's
+GuiMenu title patch, which brands it "HOME" too so both read as one system) - this script is only
+ever launched from here, during a game.
 
 Quit asks first - SIGKILLing the whole paused process tree with no way back is the one
 destructive, unrecoverable action here. Resume doesn't need to ask - there's nothing to lose by
@@ -16,7 +20,7 @@ import sys
 import pygame
 
 import limusic_control
-from pause_supervisor import find_pause_input_devices, wait_for_pause_press
+from home_supervisor import find_home_input_devices, wait_for_home_press
 
 BG = (20, 20, 24)
 FG = (235, 235, 235)
@@ -27,23 +31,23 @@ MUSIC_POLL_MS = 1000
 ART_SIZE = 160
 
 LIMUSIC_SERVICE = "/usr/share/batocera/services/limusic"
-OVERLAY_WINDOW_NAME = "batocera-pause-overlay"
+OVERLAY_WINDOW_NAME = "batocera-home-overlay"
 
 
 def _open_limusic_window():
     """Raises Limusic's own window on top of this one (see the "limusic" service's show/hide
-    subcommands) and blocks until the pause button/Home key is pressed again, then hides it and
+    subcommands) and blocks until the Home button/key is pressed again, then hides it and
     refocuses this window.
 
     Once Limusic has X focus, this process's own pygame event loop stops receiving key presses -
-    so the wait below reuses pause_supervisor's raw evdev read of the pause button itself, the
-    same one that works regardless of which window currently has focus. Like pause_supervisor's
+    so the wait below reuses home_supervisor's raw evdev read of the Home button itself, the
+    same one that works regardless of which window currently has focus. Like home_supervisor's
     own "share the display with a merely-frozen process" assumption (see its module docstring),
     getting keyboard focus back afterwards via xdotool windowactivate, with no window manager
     running, is the one part of this that hasn't been exercised on real hardware.
     """
     subprocess.run([LIMUSIC_SERVICE, "show"], check=False)
-    wait_for_pause_press(find_pause_input_devices(), lambda: True)
+    wait_for_home_press(find_home_input_devices(), lambda: True)
     subprocess.run([LIMUSIC_SERVICE, "hide"], check=False)
     subprocess.run(["xdotool", "search", "--name", OVERLAY_WINDOW_NAME, "windowactivate"], check=False)
 
@@ -51,8 +55,8 @@ def _open_limusic_window():
 def main():
     result_path = sys.argv[1]
     # pids (sys.argv[2]) aren't used by this minimal overlay - kept in the argv shape anyway so a
-    # future per-emulator pause action (e.g. a save-state key injected via uinput) has them
-    # without changing how pause_supervisor.py invokes this.
+    # future per-emulator Home action (e.g. a save-state key injected via uinput) has them
+    # without changing how home_supervisor.py invokes this.
 
     pygame.init()
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -174,7 +178,7 @@ def main():
                 screen.blit(hint_font.render(label, True, FG), (rect.x + 10, rect.y + 15))
             screen.blit(hint_font.render("Left/Right: choose   Enter: select   Escape: back", True, DIM), (center_x - 220, controls_y + 80))
         else:
-            heading = "Quit?" if view == "quit_confirm" else "Paused"
+            heading = "Quit?" if view == "quit_confirm" else "Home"
             screen.blit(font.render(heading, True, FG), (center_x - 80, 160))
             if view == "quit_confirm":
                 msg = "This closes what's running right now. Any unsaved progress is lost."

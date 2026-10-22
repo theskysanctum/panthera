@@ -46,8 +46,8 @@ _BUTTON_MAPPING: Final = {
     'x': 'y',
     'y': 'x',
     # "hotkey" is deliberately absent: Kodi's stock keymap binds a single press of its own
-    # "guide" button to its own action, which would fight with the universal pause
-    # (batocera-pause), which reserves the same physical button.
+    # "guide" button to its own action, which would fight with Home
+    # (batocera-home), which reserves the same physical button.
     'select': 'back',
     'start': 'start',
     'pageup': 'leftbumper',

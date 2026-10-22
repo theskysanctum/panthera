@@ -94,6 +94,14 @@ define BATOCERA_EMULATIONSTATION_RPI_FIXUP
 	$(SED) 's|.{CMAKE_FIND_ROOT_PATH}/usr|$(STAGING_DIR)/usr|g'    $(@D)/CMakeLists.txt
 endef
 
+# Brands the native Start/Space menu "HOME" instead of "MAIN MENU" - see batocera-home, which
+# brands the in-game Guide-button/pause menu the same way, so both read as one system even
+# though EmulationStation still does all the actual menu work here (settings, scraper, network,
+# etc.) completely unchanged.
+define BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
+	$(SED) 's|_("MAIN MENU")|_("HOME")|' $(@D)/es-app/src/guis/GuiMenu.cpp
+endef
+
 define BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 	cp $(STAGING_DIR)/usr/share/batocera-es-system/es_external_translations.h \
 	    $(STAGING_DIR)/usr/share/batocera-es-system/es_keys_translations.h $(@D)/es-app/src
@@ -224,6 +232,7 @@ define BATOCERA_EMULATIONSTATION_BOOT
 endef
 
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_RPI_FIXUP
+BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_RESOURCES
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_BOOT

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Controls Limusic (desktop YouTube Music client - see package/batocera/utils/limusic/) from the
-pause overlay's own Music view: play/pause, skip, and album art, driven entirely over the
+"""Controls Limusic (desktop YouTube Music client - see package/batocera/utils/limusic/) from
+Home's own Music view: play/pause, skip, and album art, driven entirely over the
 standard org.mpris.MediaPlayer2 D-Bus interface every real media player implements (confirmed live
 Limusic itself supports this - "proper MPRIS support" per its own README) - this never needs to
 scrape Limusic's own UI.
@@ -45,7 +45,7 @@ async def _call(
 ) -> Any:
     """Makes one D-Bus call against Limusic's MPRIS object and disconnects - a fresh connection
     per call rather than a held-open one, since these only ever fire one at a time from a
-    synchronous pygame event loop (see pause_overlay.py) and never need a persistent connection."""
+    synchronous pygame event loop (see home_overlay.py) and never need a persistent connection."""
     bus = await MessageBus(bus_address=SESSION_BUS_ADDRESS, bus_type=BusType.SESSION).connect()
     try:
         reply = await bus.call(
@@ -67,8 +67,8 @@ async def _call(
 
 def _call_sync(member: str, **kwargs: Any) -> Any:
     """Never raises - every caller here treats "Limusic isn't up yet / isn't registered on the
-    bus / the bus itself isn't reachable" the same way: silently do nothing rather than crash the
-    pause overlay over background music being briefly unavailable."""
+    bus / the bus itself isn't reachable" the same way: silently do nothing rather than crash
+    Home over background music being briefly unavailable."""
     try:
         return asyncio.run(_call(member, **kwargs))
     except Exception:

@@ -40,26 +40,26 @@ if TYPE_CHECKING:
 _logger: Final = logging.getLogger(__name__)
 _emulator_logger: Final = logging.getLogger('emulator')
 
-_PAUSE_SHARE_DIR = '/usr/share/batocera/pause'
+_HOME_SHARE_DIR = '/usr/share/batocera/home'
 
 
-def _start_pause_supervisor(pid: int, env: MutableMapping[str, str | Path]) -> asyncio.Future[None] | None:
-    """Starts the universal pause watcher (Guide button/Home key -> SIGSTOP the whole tree and
-    show a Resume/Quit screen) against the just-launched process, if batocera-pause is installed
-    - an optional package (not every target has a gamepad worth dedicating a hotkey to), so this
+def _start_home_supervisor(pid: int, env: MutableMapping[str, str | Path]) -> asyncio.Future[None] | None:
+    """Starts the Home watcher (Guide button/Home key -> SIGSTOP the whole tree and show a
+    Resume/Quit screen) against the just-launched process, if batocera-home is installed - an
+    optional package (not every target has a gamepad worth dedicating a hotkey to), so this
     degrades to doing nothing at all if its module isn't there. Runs in a thread executor since
-    pause_supervisor.supervise() blocks on evdev reads/signal waits for as long as the game runs;
+    home_supervisor.supervise() blocks on evdev reads/signal waits for as long as the game runs;
     that thread naturally returns on its own once the game exits (supervise() notices via
     psutil), so this is never explicitly cancelled the way the stdout/stderr reader tasks are."""
-    if _PAUSE_SHARE_DIR not in sys.path:
-        sys.path.insert(0, _PAUSE_SHARE_DIR)
+    if _HOME_SHARE_DIR not in sys.path:
+        sys.path.insert(0, _HOME_SHARE_DIR)
     try:
-        import pause_supervisor
+        import home_supervisor
     except ImportError:
         return None
 
     loop = asyncio.get_running_loop()
-    return loop.run_in_executor(None, pause_supervisor.supervise, pid, env_to_fspath(env))
+    return loop.run_in_executor(None, home_supervisor.supervise, pid, env_to_fspath(env))
 
 
 _MAX_LOGGED_LINES_PER_SECOND: Final = 200
@@ -166,7 +166,7 @@ class Command:
         loop = asyncio.get_running_loop()
         loop.add_signal_handler(signal.SIGINT, _signal_handler)
 
-        _start_pause_supervisor(proc.pid, env)
+        _start_home_supervisor(proc.pid, env)
 
         assert proc.stdout is not None
         assert proc.stderr is not None
