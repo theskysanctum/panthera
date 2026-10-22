@@ -59,6 +59,21 @@
 	     on the right and metadata on the left, which is the mirror image of what we want, so an
 	     unthemed field would land on top of the list instead of just looking undecorated. -->
 	<view name="detailed" displayName="Advanced">
+		<!-- Backs the metadata/boxart panel with the same nine-patch frame and fill the <menu>
+		     view uses for its own panel, so the two read as one consistent UI style. extra="true"
+		     is required here: unlike the named md_* slots DetailedContainer looks up itself,
+		     "ninepatch" isn't one of ES's auto-extra types, so without it this element would just
+		     be parsed and never instantiated. zIndex keeps it behind every md_* element (30/40). -->
+		<ninepatch extra="true" name="md_panel_bg">
+			<pos>0.505 0.015</pos>
+			<size>0.475 0.965</size>
+			<path>:/frame.png</path>
+			<color>0A1216F0</color>
+			<centerColor>0A1216F0</centerColor>
+			<cornerSize>16 16</cornerSize>
+			<zIndex>5</zIndex>
+		</ninepatch>
+
 		<gamelist name="gamelist">
 			<pos>0.03 0.08</pos>
 			<size>0.44 0.84</size>
