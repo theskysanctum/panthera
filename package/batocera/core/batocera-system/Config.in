@@ -215,6 +215,8 @@ config BR2_PACKAGE_BATOCERA_SYSTEM
 	select BR2_PACKAGE_BATOCERA_UDEV_RULES		# extra udev rules for specifics joysticks/devices
 	select BR2_PACKAGE_BATOCERA_USERDATAINIT	# userdata init files
 	select BR2_PACKAGE_BATOCERA_BATTERY_CHECKER
+	select BR2_PACKAGE_BATOCERA_HOME		# Guide/Home pause-resume overlay - nothing selected this before now
+	select BR2_PACKAGE_PANTHERA_SHOP		# Game Downloader, launched from Home's menu
 	select BR2_PACKAGE_HOTKEYGEN
 	select BR2_PACKAGE_BATOCERA_CONTROLCENTER  if BR2_PACKAGE_BATOCERA_XWAYLAND || BR2_PACKAGE_BATOCERA_XORG
 	select BR2_PACKAGE_CIFS_UTILS			# required for boot mounts

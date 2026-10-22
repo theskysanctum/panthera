@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PANTHERA_SHOP
+	bool "panthera-shop"
+	select BR2_PACKAGE_PYTHON3_SQLITE
+	help
+	  Game Downloader: a fork of RGSX (github.com/RetroGameSets/RGSX),
+	  re-themed and rebranded, launched from the in-game Home overlay
+	  rather than as a Ports entry. See batocera-home's "Game Downloader"
+	  option.
+
+	  https://github.com/theskysanctum/RGSX

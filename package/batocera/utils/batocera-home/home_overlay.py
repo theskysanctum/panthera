@@ -16,6 +16,7 @@ resuming. Music opens a sub-view that controls the background Limusic player (se
 limusic_control.py) rather than resuming or quitting anything.
 
 Writes its result ("resume" or "quit") to the given file path and exits."""
+import os
 import subprocess
 import sys
 
@@ -32,6 +33,9 @@ ART_SIZE = 160
 
 LIMUSIC_SERVICE = "/usr/share/batocera/services/limusic"
 OVERLAY_WINDOW_NAME = "batocera-home-overlay"
+
+SHOP_DIR = "/usr/share/batocera/panthera-shop/RGSX"
+SHOP_SAVE_DIR = "/userdata/saves/panthera-shop"
 
 HINT = "Left/Right: choose   Enter: select   Escape: back"
 
@@ -52,6 +56,22 @@ def _open_limusic_window():
     wait_for_home_press(find_home_input_devices(), lambda: True)
     subprocess.run([LIMUSIC_SERVICE, "hide"], check=False)
     subprocess.run(["xdotool", "search", "--name", OVERLAY_WINDOW_NAME, "windowactivate"], check=False)
+
+
+def _open_shop():
+    """Launches Game Downloader (a fork of RGSX, see panthera-shop) as its own fullscreen pygame
+    app, blocking until it exits and then returning to this overlay's main view - the same
+    blocking-subprocess shape home_supervisor.py already uses to run this overlay itself.
+
+    The env vars switch RGSX's own config.py into its "Docker mode" path resolution so its code
+    (read-only, under /usr/share) and its mutable state (settings/history/database, writable)
+    don't have to live next to each other the way its traditional <USERDATA>/roms/ports/RGSX
+    layout assumes - this never runs from Ports."""
+    env = dict(os.environ)
+    env["RGSX_APP_DIR"] = os.path.dirname(SHOP_DIR)
+    env["RGSX_CONFIG_DIR"] = SHOP_SAVE_DIR
+    env["RGSX_DATA_DIR"] = "/userdata"
+    subprocess.run(["python3", "__main__.py"], cwd=SHOP_DIR, env=env, check=False)
 
 
 def _load_frame(theme):
@@ -193,7 +213,7 @@ def main():
     frame_corner = _ninepatch_corner(frame_image, theme)
 
     view = "main"  # "main" | "quit_confirm" | "music"
-    options = ["Resume", "Music", "Quit"]
+    options = ["Resume", "Music", "Game Downloader", "Quit"]
     selected = 0
     clock = pygame.time.Clock()
     result = "resume"
@@ -220,11 +240,11 @@ def main():
                             running = False
                         else:
                             view = "main"
-                            options = ["Resume", "Music", "Quit"]
+                            options = ["Resume", "Music", "Game Downloader", "Quit"]
                             selected = 0
                     elif event.key == pygame.K_ESCAPE:
                         view = "main"
-                        options = ["Resume", "Music", "Quit"]
+                        options = ["Resume", "Music", "Game Downloader", "Quit"]
                         selected = 0
                 elif view == "music":
                     if event.key in (pygame.K_LEFT, pygame.K_UP):
@@ -255,6 +275,8 @@ def main():
                         elif options[selected] == "Music":
                             view = "music"
                             last_poll = -MUSIC_POLL_MS  # force an immediate refresh
+                        elif options[selected] == "Game Downloader":
+                            _open_shop()
                         else:  # "Quit"
                             view = "quit_confirm"
                             options = ["Yes", "No"]
