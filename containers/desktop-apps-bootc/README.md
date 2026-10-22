@@ -24,8 +24,13 @@ commands below.
 
 ## Build the container image
 
+Build with `sudo` even at this step: the raw disk image step below runs
+`bootc-image-builder` privileged against root's own container storage
+(`/var/lib/containers/storage`), not your regular rootless one, so this
+image needs to already be there for it to find.
+
 ```sh
-podman build -t desktop-apps-bootc:latest -f Containerfile .
+sudo podman build -t desktop-apps-bootc:latest -f Containerfile .
 ```
 
 To point it at a different app/URL, override the kiosk command at build
@@ -33,7 +38,7 @@ time (it becomes the X session's only client, so keep it a single
 foreground command):
 
 ```sh
-podman build -t desktop-apps-bootc:latest \
+sudo podman build -t desktop-apps-bootc:latest \
     --build-arg KIOSK_CMD="/usr/bin/brave-browser --no-sandbox --kiosk https://your-app" \
     -f Containerfile .
 ```
@@ -51,12 +56,22 @@ sudo podman run --rm -it --privileged \
     -v ./output:/output \
     -v /var/lib/containers/storage:/var/lib/containers/storage \
     quay.io/centos-bootc/bootc-image-builder:latest \
-    --type qcow2 --rootfs xfs --local desktop-apps-bootc:latest
+    --type qcow2 --rootfs xfs localhost/desktop-apps-bootc:latest
 ```
 
-The result lands at `output/qcow2/disk.qcow2` - boot it directly with
-QEMU/KVM (`-drive file=output/qcow2/disk.qcow2,format=qcow2,if=virtio`),
-or convert it to a flashable raw disk first if you need to write it to
+The image reference has to be the fully-qualified `localhost/desktop-apps-bootc:latest`,
+not the bare `desktop-apps-bootc:latest` tag `podman build` printed - inside
+its own container, bootc-image-builder resolves a bare name against
+`docker.io/library/` instead of the local store and fails with a
+"does not resolve to an image ID" error. `--local` is also gone from
+this command; it's the default now and podman warns if you still pass it.
+
+The output is owned by root (bootc-image-builder ran privileged) -
+`sudo chown -R $(id -u):$(id -g) output` if you need it back as your
+own user. The result lands at `output/qcow2/disk.qcow2` - boot it
+directly with QEMU/KVM
+(`-drive file=output/qcow2/disk.qcow2,format=qcow2,if=virtio`), or
+convert it to a flashable raw disk first if you need to write it to
 physical media:
 
 ```sh
