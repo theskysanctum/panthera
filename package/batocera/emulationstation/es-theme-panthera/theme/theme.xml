@@ -1,0 +1,79 @@
+<theme>
+	<formatVersion>6</formatVersion>
+
+	<!-- Panthera's own EmulationStation theme: no external images or fonts, just color/gradient
+	     fills and ES's built-in text fallbacks, tuned to the colors in the boot splash (near-black
+	     with a deep teal -> vivid purple glow). One root theme.xml with no per-system folders: ES
+	     falls back to this file for every system (SystemData::getThemePath()). -->
+
+	<variables>
+		<bg>000000</bg>
+		<teal>00455C</teal>
+		<purple>9700CA</purple>
+		<textPrimary>AAB4B8</textPrimary>
+		<textSelected>FFFFFF</textSelected>
+		<textFooter>6E7B80</textFooter>
+	</variables>
+
+	<view name="system">
+		<systemcarousel name="systemcarousel">
+			<type>horizontal</type>
+			<size>1 0.5</size>
+			<pos>0 0.38</pos>
+			<color>${teal}D0</color>
+			<colorEnd>${purple}D0</colorEnd>
+			<gradientType>horizontal</gradientType>
+			<logoSize>0.25 0.15</logoSize>
+			<defaultTransition>fade &amp; slide</defaultTransition>
+		</systemcarousel>
+
+		<text name="systemInfo">
+			<pos>0 0.86</pos>
+			<size>1 0.06</size>
+			<color>${textFooter}FF</color>
+			<alignment>center</alignment>
+		</text>
+	</view>
+
+	<view name="basic">
+		<gamelist name="gamelist">
+			<pos>0.05 0.1</pos>
+			<size>0.9 0.85</size>
+			<primaryColor>${textPrimary}FF</primaryColor>
+			<secondaryColor>${textPrimary}FF</secondaryColor>
+			<selectedColor>${textSelected}FF</selectedColor>
+			<selectorColor>${teal}FF</selectorColor>
+			<selectorColorEnd>${purple}FF</selectorColorEnd>
+			<selectorGradientType>horizontal</selectorGradientType>
+			<alignment>left</alignment>
+			<horizontalMargin>0.02</horizontalMargin>
+			<lineSpacing>1.3</lineSpacing>
+			<scrollbarColor>${purple}FF</scrollbarColor>
+		</gamelist>
+	</view>
+
+	<view name="menu">
+		<menubg name="menubg">
+			<color>0A1216F0</color>
+			<centerColor>0A1216F0</centerColor>
+			<cornerSize>16 16</cornerSize>
+		</menubg>
+
+		<menutitle name="menutitle">
+			<color>${textSelected}FF</color>
+			<selectorColor>${purple}FF</selectorColor>
+		</menutitle>
+
+		<menutext name="menutext">
+			<color>${textPrimary}FF</color>
+			<selectedColor>${textSelected}FF</selectedColor>
+			<selectorColor>${teal}FF</selectorColor>
+			<selectorColorEnd>${purple}FF</selectorColorEnd>
+			<selectorGradientType>horizontal</selectorGradientType>
+		</menutext>
+
+		<menufooter name="menufooter">
+			<color>${textFooter}FF</color>
+		</menufooter>
+	</view>
+</theme>

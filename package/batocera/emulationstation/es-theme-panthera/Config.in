@@ -1,0 +1,5 @@
+config BR2_PACKAGE_ES_THEME_PANTHERA
+	bool "es-theme-panthera"
+	help
+	  Panthera's own EmulationStation theme: a dark, basic-view-only
+	  theme matching the boot splash colors (teal/purple glow on black).

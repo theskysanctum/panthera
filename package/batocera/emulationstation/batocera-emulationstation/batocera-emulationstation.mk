@@ -122,7 +122,7 @@ define BATOCERA_EMULATIONSTATION_STREMIO_MENU
 	$(SED) 's|"batocera-kodi " + commandline|"batocera-stremio " + commandline|' $(@D)/es-app/src/ApiSystem.cpp
 endef
 
-# Panthera ships exactly one theme (es-theme-carbon, see package/batocera/emulationstation -
+# Panthera ships exactly one theme (es-theme-panthera, see package/batocera/emulationstation -
 # unconditionally selected, never a choice) - so the "THEME SET" dropdown that lets you switch
 # between installed sets, and its save-func that re-applies one, are both meaningless here, and
 # the "THEMES" online installer/browser (GuiThemeInstaller) would only ever offer to replace the
