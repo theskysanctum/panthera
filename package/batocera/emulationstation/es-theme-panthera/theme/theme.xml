@@ -52,6 +52,149 @@
 		</gamelist>
 	</view>
 
+	<!-- "Advanced": game names on the left, boxart + metadata on the right - ES's own "detailed"
+	     view (DetailedGameListView/DetailedContainer), just repositioned. Every md_* field that's
+	     shown has to be explicitly placed here: DetailedContainer's hardcoded fallback positions
+	     (unthemed fields keep whatever initMDLabels()/initMDValues() gave them) assume the list is
+	     on the right and metadata on the left, which is the mirror image of what we want, so an
+	     unthemed field would land on top of the list instead of just looking undecorated. -->
+	<view name="detailed" displayName="Advanced">
+		<gamelist name="gamelist">
+			<pos>0.03 0.08</pos>
+			<size>0.44 0.84</size>
+			<primaryColor>${textPrimary}FF</primaryColor>
+			<secondaryColor>${textPrimary}FF</secondaryColor>
+			<selectedColor>${textSelected}FF</selectedColor>
+			<selectorColor>${teal}FF</selectorColor>
+			<selectorColorEnd>${purple}FF</selectorColorEnd>
+			<selectorGradientType>horizontal</selectorGradientType>
+			<alignment>left</alignment>
+			<horizontalMargin>0.02</horizontalMargin>
+			<lineSpacing>1.3</lineSpacing>
+			<scrollbarColor>${purple}FF</scrollbarColor>
+		</gamelist>
+
+		<image name="md_image">
+			<pos>0.745 0.28</pos>
+			<maxSize>0.40 0.40</maxSize>
+		</image>
+
+		<text name="md_name">
+			<pos>0.52 0.02</pos>
+			<size>0.45 0.07</size>
+			<color>${textSelected}FF</color>
+			<fontSize>0.045</fontSize>
+			<alignment>center</alignment>
+		</text>
+
+		<text name="md_lbl_rating">
+			<pos>0.52 0.555</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<rating name="md_rating">
+			<pos>0.605 0.555</pos>
+			<size>0.1 0.03</size>
+			<color>${purple}FF</color>
+			<unfilledColor>${textFooter}FF</unfilledColor>
+		</rating>
+		<text name="md_lbl_releasedate">
+			<pos>0.76 0.555</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<datetime name="md_releasedate">
+			<pos>0.845 0.555</pos>
+			<size>0.115 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</datetime>
+
+		<text name="md_lbl_developer">
+			<pos>0.52 0.595</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_developer">
+			<pos>0.605 0.595</pos>
+			<size>0.145 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_lbl_publisher">
+			<pos>0.76 0.595</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_publisher">
+			<pos>0.845 0.595</pos>
+			<size>0.115 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+
+		<text name="md_lbl_genre">
+			<pos>0.52 0.635</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_genre">
+			<pos>0.605 0.635</pos>
+			<size>0.145 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_lbl_players">
+			<pos>0.76 0.635</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_players">
+			<pos>0.845 0.635</pos>
+			<size>0.115 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+
+		<text name="md_lbl_lastplayed">
+			<pos>0.52 0.675</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<datetime name="md_lastplayed">
+			<pos>0.605 0.675</pos>
+			<size>0.145 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</datetime>
+		<text name="md_lbl_playcount">
+			<pos>0.76 0.675</pos>
+			<size>0.085 0.035</size>
+			<color>${textFooter}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+		<text name="md_playcount">
+			<pos>0.845 0.675</pos>
+			<size>0.115 0.035</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.022</fontSize>
+		</text>
+
+		<text name="md_description">
+			<pos>0.52 0.73</pos>
+			<size>0.45 0.24</size>
+			<color>${textPrimary}FF</color>
+			<fontSize>0.02</fontSize>
+		</text>
+	</view>
+
 	<view name="menu">
 		<menubg name="menubg">
 			<color>0A1216F0</color>
