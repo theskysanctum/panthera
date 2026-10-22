@@ -133,6 +133,25 @@ EOF
 # before the window manager/compositor/app ever run.
 RUN useradd -m -s /bin/bash appuser
 
+# Netflix/Hulu/etc. (the "streaming" system) need Widevine DRM, which Brave gates behind a
+# one-time opt-in instead of shipping it enabled like stock Chromium does - preseed that opt-in
+# into Brave's Local State file before its first launch, since there's no settings page or
+# address bar reachable in a --kiosk session to click the toggle in. Confirmed against brave-core
+# source directly rather than guessed: the pref is "brave.widevine_opted_in" (kWidevineEnabled in
+# components/constants/pref_names.h), and Brave's own patch to Chromium's
+# widevine_cdm_component_installer.cc gates that file's RegisterWidevineCdmComponent() on this
+# exact pref - a function Chromium itself already calls unconditionally on every browser startup
+# as part of its normal component-updater registration, not just from the settings-page click
+# handler. So seeding the pref true is enough for the real CDM binary to actually get installed
+# on first launch, not just silently "opted in" with nothing installed.
+RUN <<EOF
+mkdir -p /home/appuser/.config/BraveSoftware/Brave-Browser
+cat > "/home/appuser/.config/BraveSoftware/Brave-Browser/Local State" <<JSON
+{"brave": {"widevine_opted_in": true}}
+JSON
+chown -R appuser:appuser /home/appuser/.config
+EOF
+
 COPY --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY --chmod=0755 session.sh /usr/local/bin/session.sh
 COPY picom.conf /etc/xdg/picom.conf
