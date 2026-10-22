@@ -36,6 +36,19 @@
 	</view>
 
 	<view name="basic">
+		<!-- Same nine-patch frame/fill as the <menu> view's menubg and the Advanced view's
+		     metadata panel, so every panel in the UI reads as one consistent style. zIndex
+		     keeps it behind the list (gamelist's own default zIndex is 20). -->
+		<ninepatch extra="true" name="list_panel_bg">
+			<pos>0.03 0.08</pos>
+			<size>0.94 0.89</size>
+			<path>:/frame.png</path>
+			<color>0A1216F0</color>
+			<centerColor>0A1216F0</centerColor>
+			<cornerSize>16 16</cornerSize>
+			<zIndex>5</zIndex>
+		</ninepatch>
+
 		<gamelist name="gamelist">
 			<pos>0.05 0.1</pos>
 			<size>0.9 0.85</size>
@@ -67,6 +80,15 @@
 		<ninepatch extra="true" name="md_panel_bg">
 			<pos>0.505 0.015</pos>
 			<size>0.475 0.965</size>
+			<path>:/frame.png</path>
+			<color>0A1216F0</color>
+			<centerColor>0A1216F0</centerColor>
+			<cornerSize>16 16</cornerSize>
+			<zIndex>5</zIndex>
+		</ninepatch>
+		<ninepatch extra="true" name="list_panel_bg">
+			<pos>0.015 0.065</pos>
+			<size>0.475 0.875</size>
 			<path>:/frame.png</path>
 			<color>0A1216F0</color>
 			<centerColor>0A1216F0</centerColor>
