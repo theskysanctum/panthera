@@ -126,16 +126,16 @@ endef
 # unconditionally selected, never a choice) - so the "THEME SET" dropdown that lets you switch
 # between installed sets, and its save-func that re-applies one, are both meaningless here, and
 # the "THEMES" online installer/browser (GuiThemeInstaller) would only ever offer to replace the
-# one theme this build ships with something unsupported. The dropdown is replaced with a plain,
-# non-interactive line naming the active set, so Appearance settings still say which theme is in
-# use without implying there's a choice to make. THEME CONFIGURATION (the active theme's own
-# subsets/grid/gamelist-style options) is left alone - that's tuning the one theme we ship, not
-# picking between sets - so its one surviving reference to the removed dropdown just passes
-# nullptr instead, which is exactly what that function already treats as "no dropdown involved".
+# one theme this build ships with something unsupported. Both are removed outright rather than
+# left as a read-only label - there's nothing for Appearance settings to say about theme choice
+# when there isn't one. THEME CONFIGURATION (the active theme's own subsets/grid/gamelist-style
+# options) is left alone - that's tuning the one theme we ship, not picking between sets - so its
+# one surviving reference to the removed dropdown just passes nullptr instead, which is exactly
+# what that function already treats as "no dropdown involved".
 define BATOCERA_EMULATIONSTATION_THEME_LOCK
 	$(SED) '/^\t\/\/ Themes installer\/browser$$/,/^\t}$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
-	$(SED) '/^\t\tauto theme_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("THEME SET"), false);$$/,/^\t\t\/\/\ttheme_set->add(it->first, it->first, it == selectedSet);$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
-	$(SED) 's|^\t\ts->addWithLabel(_("THEME SET"), theme_set);$$|\t\ts->addEntry(_("THEME SET") + std::string(": ") + selectedSet->first);|' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) '/^\t\tauto selectedSet = themeSets.find(Settings::getInstance()->getString("ThemeSet"));$$/,/^\t\t\/\/\ttheme_set->add(it->first, it->first, it == selectedSet);$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) '/^\t\ts->addWithLabel(_("THEME SET"), theme_set);$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
 	$(SED) '/^\t\ts->addSaveFunc(\[s, theme_set, pthis, window, system\]$$/,/^\t\t});$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
 	$(SED) 's|s->addSubMenu(_("THEME CONFIGURATION"), \[this, s, theme_set\]() { openThemeConfiguration(mWindow, s, theme_set); });|s->addSubMenu(_("THEME CONFIGURATION"), [this, s]() { openThemeConfiguration(mWindow, s, nullptr); });|' $(@D)/es-app/src/guis/GuiMenu.cpp
 endef
