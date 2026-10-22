@@ -50,6 +50,18 @@ gba:
   comment_br: |
     Para mais informações: https://wiki.batocera.org/systems:gba
 
+gbc:
+  name:       Game Boy Color
+  manufacturer: Nintendo
+  release: 1998
+  hardware: portable
+  comment_en: |
+    For more info: https://wiki.batocera.org/systems:gbc
+  comment_fr: |
+    Trouvez la documentation ici: https://wiki.batocera.org/systems:gbc
+  comment_br: |
+    Para mais informações: https://wiki.batocera.org/systems:gbc
+
 gb:
   name:       Game Boy
   manufacturer: Nintendo
@@ -93,6 +105,27 @@ megadrive:
     Trouvez la documentation ici: https://wiki.batocera.org/systems:megadrive
   comment_br: |
     Para mais informações: https://wiki.batocera.org/systems:megadrive
+
+megacd:
+  name:       Mega CD
+  manufacturer: Sega
+  release: 1991
+  hardware: console
+  platform:   megacd
+  theme:      megacd
+
+sega32x:
+  name:       32x
+  manufacturer: Sega
+  release: 1994
+  hardware: console
+  group:      megadrive
+
+mastersystem:
+  name:       Master System
+  manufacturer: Sega
+  release: 1985
+  hardware: console
 
 psp:
   name: PlayStation Portable

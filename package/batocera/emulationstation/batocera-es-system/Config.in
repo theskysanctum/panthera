@@ -6,8 +6,9 @@ config BR2_PACKAGE_BATOCERA_ES_SYSTEM
 	  curated system list in es_systems.yml:
 
 	    Nintendo: NES, SNES, N64, GameCube, Wii, Wii U, Game Boy,
-	      Game Boy Advance, Nintendo DS, 3DS
-	    Sega: Mega Drive, Saturn, Dreamcast
+	      Game Boy Color, Game Boy Advance, Nintendo DS, 3DS
+	    Sega: Master System, Mega Drive, Mega CD, 32X, Saturn,
+	      Dreamcast
 	    Sony: PlayStation, PlayStation 2, PlayStation 3,
 	      PlayStation Portable, PlayStation Vita
 	    Arcade & Ports: MAME, FBNeo, DOS, Ports

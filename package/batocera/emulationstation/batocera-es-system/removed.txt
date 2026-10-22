@@ -9,7 +9,6 @@ amiga1200
 amigacd32
 amigacdtv
 n64dd
-gbc
 sgb
 sgb-msu1
 gbc2players
@@ -21,10 +20,7 @@ gameandwatch
 naomi
 atomiswave
 systemsp
-megacd
-sega32x
 megadrive-msu
-mastersystem
 pico
 gamegear
 sg1000

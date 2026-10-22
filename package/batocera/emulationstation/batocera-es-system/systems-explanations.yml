@@ -3,9 +3,14 @@ default:
     libretro:
       gambatte: &gambatte_mgba_vbam
         explanation: |
-          For gb and gba, gambatte, mgba and vba-m are working very well and are maintained.
+          For gb, gbc and gba, gambatte, mgba and vba-m are working very well and are maintained.
       mgba:  *gambatte_mgba_vbam
       vba-m: *gambatte_mgba_vbam
+  gbc:
+    libretro:
+      gambatte: *gambatte_mgba_vbam
+      mgba:     *gambatte_mgba_vbam
+      vba-m:    *gambatte_mgba_vbam
   wii:
     dolphin:
       dolphin: &dolphin_arch
@@ -30,12 +35,20 @@ default:
       yabasanshiro:
         explanation: |
           Some sports games are good with yabasanshiro: college slam & slam n jam 96. These game on yabause present a lot of graphical issues.
-  megadrive:
+  mastersystem:
     libretro:
       genesisplusgx: &genesisplusgx_and_picodrive
         explanation: |
-          Historically, genesisplusgx is set by default except on weak boards where picodrive runs faster. genesisplusgx is alone to read CHD files.
+          genesisplusgx is required for Sega SG1000 and picodrive is required for Sega 32x. Thus both are enabled. Historically, genesisplusgx is set by default except on weak boards where picodrive runs faster. genesisplus is alone to read CHD files.
       picodrive: *genesisplusgx_and_picodrive
+  megadrive:
+    libretro:
+      genesisplusgx: *genesisplusgx_and_picodrive
+      picodrive:     *genesisplusgx_and_picodrive
+  megacd:
+    libretro:
+      genesisplusgx: *genesisplusgx_and_picodrive
+      picodrive:     *genesisplusgx_and_picodrive
 bcm2835:
   snes:
     libretro:
