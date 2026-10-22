@@ -2,4 +2,18 @@ config BR2_PACKAGE_BATOCERA_ES_SYSTEM
 	bool "batocera-es-system"
 	select BR2_PACKAGE_BATOCERA_LAUNCH
 	help
-	  Generates the es_system.cfg file and the roms folder
+	  Generates the es_system.cfg file and the roms folder, from the
+	  curated system list in es_systems.yml:
+
+	    Nintendo: NES, SNES, N64, GameCube, Wii, Wii U, Game Boy,
+	      Game Boy Advance, Nintendo DS, 3DS
+	    Sega: Mega Drive, Saturn, Dreamcast
+	    Sony: PlayStation, PlayStation 2, PlayStation 3,
+	      PlayStation Portable, PlayStation Vita
+	    Arcade & Ports: MAME, FBNeo, DOS, Ports
+	    Other Environments: Install Other OS, Virtual Hard Disks,
+	      VM Applications (QEMU) - see os_install/os_hdds/vm_apps
+	    Desktop Apps: container_apps
+
+	  See removed.txt in this package for every system this build
+	  does not ship.
