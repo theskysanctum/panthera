@@ -41,6 +41,24 @@ define BATOCERA_ES_SYSTEM_BUILD_CMDS
 		$(BATOCERA_ES_SYSTEM_DIR)/info_files.txt
 
 	$(call BATOCERA_ES_SYSTEM_BUILD_PO_FILES,$(BATOCERA_ES_SYSTEM_DIR),$(BATOCERA_ES_SYSTEM_DIR)/locales)
+
+	# A second es_systems.cfg, generated the same way as the real one above but from
+	# es_systems_removed.yml (every system the es_systems.yml curation dropped) instead -
+	# shipped as reference data under panthera-shop so Game Downloader's "Add a System" screen
+	# can splice a chosen <system> block into userdata's es_systems_custom.cfg at runtime,
+	# without reimplementing any of batocera-build-es-data's own emulator/core resolution.
+	# --roms-dir points at an empty directory on purpose: no default/preinstalled content for
+	# anything added back this way.
+	mkdir -p $(BATOCERA_ES_SYSTEM_DIR)/removed-systems $(BATOCERA_ES_SYSTEM_DIR)/empty-roms
+	$(HOST_DIR)/bin/batocera-build-es-data \
+		--es-systems-yml=$(BATOCERA_ES_SYSTEM_PKGDIR)/es_systems_removed.yml \
+		--locales-dir=$(BATOCERA_ES_SYSTEM_PKGDIR)/locales \
+		--roms-dir=$(BATOCERA_ES_SYSTEM_DIR)/empty-roms \
+		--defaults=$(STAGING_DIR)/usr/share/batocera/launch/defaults \
+		--keys-dir=$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera \
+		--output=$(BATOCERA_ES_SYSTEM_DIR)/removed-systems \
+		--arch=$(BATOCERA_ARCH) \
+		$(BATOCERA_ES_SYSTEM_DIR)/info_files.txt
 endef
 
 # This is defined as a macro so it can be reused in both build and update-locale-po-files
@@ -74,6 +92,8 @@ define BATOCERA_ES_SYSTEM_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/share/batocera/datainit
 	mkdir -p $(@D)/roms  # in case there is no rom
 	cp -pr $(@D)/roms $(TARGET_DIR)/usr/share/batocera/datainit/
+	$(INSTALL) -m 0644 -D $(@D)/removed-systems/es_systems.cfg \
+	    $(TARGET_DIR)/usr/share/batocera/panthera-shop/es_systems_removed.cfg
 endef
 
 $(eval $(generic-package))
