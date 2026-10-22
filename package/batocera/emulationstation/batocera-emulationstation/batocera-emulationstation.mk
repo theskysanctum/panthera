@@ -179,7 +179,7 @@ endef
 # default for most of architectures
 BATOCERA_EMULATIONSTATION_PREFIX = SDL_NOMOUSE=1
 BATOCERA_EMULATIONSTATION_CMD = emulationstation-standalone
-BATOCERA_EMULATIONSTATION_ARGS = --no-splash $${EXTRA_OPTS}
+BATOCERA_EMULATIONSTATION_ARGS = $${EXTRA_OPTS}
 BATOCERA_EMULATIONSTATION_POSTFIX = \&
 
 # disabling cec. causing perf issue on init/deinit
@@ -188,16 +188,6 @@ BATOCERA_EMULATIONSTATION_CONF_OPTS += -DCEC=OFF
 #else
 #BATOCERA_EMULATIONSTATION_CONF_OPTS += -DCEC=ON
 #endif
-
-# on SPLASH_MPV, the splash with video + es splash is ok
-ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV),y)
-BATOCERA_EMULATIONSTATION_ARGS = $${EXTRA_OPTS}
-endif
-
-# es splash is ok when there is no video
-ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_IMAGE),y)
-BATOCERA_EMULATIONSTATION_ARGS = $${EXTRA_OPTS}
-endif
 
 ## on x86/x86_64: startx runs ES
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER),y)

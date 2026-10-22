@@ -9,85 +9,11 @@ BATOCERA_SPLASH_SOURCE=
 
 BATOCERA_SPLASH_TGVERSION=$(BATOCERA_SYSTEM_VERSION) $(BATOCERA_SYSTEM_DATE)
 
-# video or image
-ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV),y)
-    BATOCERA_SPLASH_SCRIPT=Ssplash-mpv
-    BATOCERA_SPLASH_MEDIA=video
-else
-    BATOCERA_SPLASH_SCRIPT=Ssplash-image
-    BATOCERA_SPLASH_MEDIA=image
-endif
-
-# MPV options
-ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV),y)
-    # Baseline for modern boards using gpu-next
-    BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu-next,drm,sdl --gpu-context=drm --hwdec=auto
-
-    ifeq ($(BR2_x86_64),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu-next,drm,sdl --gpu-context=drm --hwdec=vaapi,auto
-    endif
-
-    # Legacy Rockchip boards requiring custom fallback (MPP / RGA)
-    ifeq ($(BR2_PACKAGE_ROCKCHIP_RGA),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=drm,sdl --hwdec=auto
-    endif
-    # Overrides the RGA option for Mainline rockchip boards (Forces stateless v4l2request)
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_RK_MAINLINE),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu --gpu-context=drm --hwdec=v4l2request
-    endif
-    # RPi use drm-copy
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_RPI),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu --gpu-context=drm --hwdec=drm-copy
-    endif
-    # Amlogic using the ffmpeg patches
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_AMLOGIC),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu-next --gpu-context=drm --hwdec=drm
-    endif
-    # SM8x50 has specific HWDEC overrides
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_SM8x50),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu-next,drm,sdl --gpu-context=drm --hwdec=v4l2m2m-copy
-    endif
-    # Allwinner H6, H616 H700 boards using stateless v4l2request decoding over Panfrost/DRM
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_ALLWINNER),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=gpu --gpu-context=drm --hwdec=v4l2request-copy
-    endif
-    # Targets that should remain empty (handled by internal defaults)
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_INTERNAL_DEFAULTS),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS =
-    endif
-    # Specific override for Amlogic vendor kernel with Panfrost enabled
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_MPV_A3GEN2),y)
-        BATOCERA_SPLASH_PLAYER_OPTIONS = --vo=sdl
-    endif
-endif
+BATOCERA_SPLASH_DEPENDENCIES += host-imagemagick dejavu
 
 BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_SCRIPT
-
-ifeq ($(BATOCERA_SPLASH_MEDIA),image)
-    BATOCERA_SPLASH_DEPENDENCIES += host-imagemagick dejavu
-    BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_IMAGE
-endif
-
-ifeq ($(BATOCERA_SPLASH_MEDIA),video)
-    BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_VIDEO
-    BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_BOOT_LOGO
-
-    # Capcom video only for H3 build (for CHA)
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_VIDEO_CAPCOM),y)
-        BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_VIDEO_CAPCOM
-    endif
-
-    # alternative video
-    ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_VIDEO_720P30),y)
-        BATO_SPLASH=$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/videos/splash-h264-720p30.mp4
-    else ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_VIDEO_1080P30),y)
-        BATO_SPLASH=$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/videos/splash-h264-1080p30.mp4
-    else ifeq ($(BR2_PACKAGE_BATOCERA_SPLASH_VIDEO_HEVC_1080P60),y)
-        BATO_SPLASH=$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/videos/splash-hevc-1080p60.mp4
-    else 
-        BATO_SPLASH=$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/videos/splash-hevc-1080p60-8bit.mp4
-    endif
-endif
+BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_BOOT_LOGO
+BATOCERA_SPLASH_POST_INSTALL_TARGET_HOOKS += BATOCERA_SPLASH_INSTALL_IMAGE
 
 define BATOCERA_SPLASH_INSTALL_SCRIPT
     mkdir -p $(TARGET_DIR)/etc/init.d
@@ -95,32 +21,16 @@ define BATOCERA_SPLASH_INSTALL_SCRIPT
         $(TARGET_DIR)/etc/init.d/S03system-splash
     install -m 0755 $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/scripts/Ssplashscreencontrol \
         $(TARGET_DIR)/etc/init.d/S30splashscreencontrol
-    install -m 0755 $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/scripts/$(BATOCERA_SPLASH_SCRIPT) \
-        $(TARGET_DIR)/etc/init.d/S28splash
-    sed -i -e s+"%PLAYER_OPTIONS%"+"$(BATOCERA_SPLASH_PLAYER_OPTIONS)"+g \
+    install -m 0755 $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/scripts/Ssplash-image \
         $(TARGET_DIR)/etc/init.d/S28splash
 endef
 
+# Ssystem-splash (the very-early framebuffer logo, shown before the splash below even starts)
+# always needs this, regardless of the image splash below.
 define BATOCERA_SPLASH_INSTALL_BOOT_LOGO
     mkdir -p $(TARGET_DIR)/usr/share/batocera/splash
     cp "$(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/images/logo.png" \
         "${TARGET_DIR}/usr/share/batocera/splash/boot-logo.png"
-endef
-
-define BATOCERA_SPLASH_INSTALL_VIDEO
-    mkdir -p $(TARGET_DIR)/usr/share/batocera/splash
-    cp $(BATO_SPLASH) $(TARGET_DIR)/usr/share/batocera/splash/splash.mp4
-    echo -e "1\n00:00:00,000 --> 00:00:02,000\n$(BATOCERA_SPLASH_TGVERSION)" > \
-        "${TARGET_DIR}/usr/share/batocera/splash/splash.srt"
-endef
-
-# Hack for CHA, custom Capcom splash video
-define BATOCERA_SPLASH_INSTALL_VIDEO_CAPCOM
-    mkdir -p $(TARGET_DIR)/usr/share/batocera/splash
-    cp $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/core/batocera-splash/videos/Capcom.mp4 \
-        $(TARGET_DIR)/usr/share/batocera/splash/Capcom.mp4
-    echo -e "1\n00:00:00,000 --> 00:00:02,000\n$(BATOCERA_SPLASH_TGVERSION)" > \
-        "${TARGET_DIR}/usr/share/batocera/splash/splash.srt"
 endef
 
 # $(1) source image, $(2) point size, $(3) text position, $(4) output image

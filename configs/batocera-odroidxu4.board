@@ -37,7 +37,6 @@ BR2_PACKAGE_BATOCERA_WAYLAND_LABWC=y
 # batocera system
 
 # batocera splash screen
-BR2_PACKAGE_BATOCERA_SPLASH_IMAGE=y
 
 # odroid-xu4 bootloader
 BR2_PACKAGE_UBOOT_ODROID_XU4=y

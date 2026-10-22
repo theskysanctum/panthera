@@ -61,4 +61,3 @@ BR2_PACKAGE_BATOCERA_XWAYLAND=y
 # Include Kodi Media Center
 
 # batocera splash screen
-BR2_PACKAGE_BATOCERA_SPLASH_IMAGE=y
