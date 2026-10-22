@@ -20,6 +20,9 @@ define BATOCERA_HOME_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0644 -D \
 	    $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/utils/batocera-home/limusic_control.py \
 	    $(TARGET_DIR)/usr/share/batocera/home/limusic_control.py
+	$(INSTALL) -m 0644 -D \
+	    $(BR2_EXTERNAL_BATOCERA_PATH)/package/batocera/utils/batocera-home/es_theme.py \
+	    $(TARGET_DIR)/usr/share/batocera/home/es_theme.py
 endef
 
 $(eval $(generic-package))

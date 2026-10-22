@@ -122,6 +122,24 @@ define BATOCERA_EMULATIONSTATION_STREMIO_MENU
 	$(SED) 's|"batocera-kodi " + commandline|"batocera-stremio " + commandline|' $(@D)/es-app/src/ApiSystem.cpp
 endef
 
+# Panthera ships exactly one theme (es-theme-carbon, see package/batocera/emulationstation -
+# unconditionally selected, never a choice) - so the "THEME SET" dropdown that lets you switch
+# between installed sets, and its save-func that re-applies one, are both meaningless here, and
+# the "THEMES" online installer/browser (GuiThemeInstaller) would only ever offer to replace the
+# one theme this build ships with something unsupported. The dropdown is replaced with a plain,
+# non-interactive line naming the active set, so Appearance settings still say which theme is in
+# use without implying there's a choice to make. THEME CONFIGURATION (the active theme's own
+# subsets/grid/gamelist-style options) is left alone - that's tuning the one theme we ship, not
+# picking between sets - so its one surviving reference to the removed dropdown just passes
+# nullptr instead, which is exactly what that function already treats as "no dropdown involved".
+define BATOCERA_EMULATIONSTATION_THEME_LOCK
+	$(SED) '/^\t\/\/ Themes installer\/browser$$/,/^\t}$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) '/^\t\tauto theme_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("THEME SET"), false);$$/,/^\t\t\/\/\ttheme_set->add(it->first, it->first, it == selectedSet);$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) 's|^\t\ts->addWithLabel(_("THEME SET"), theme_set);$$|\t\ts->addEntry(_("THEME SET") + std::string(": ") + selectedSet->first);|' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) '/^\t\ts->addSaveFunc(\[s, theme_set, pthis, window, system\]$$/,/^\t\t});$$/d' $(@D)/es-app/src/guis/GuiMenu.cpp
+	$(SED) 's|s->addSubMenu(_("THEME CONFIGURATION"), \[this, s, theme_set\]() { openThemeConfiguration(mWindow, s, theme_set); });|s->addSubMenu(_("THEME CONFIGURATION"), [this, s]() { openThemeConfiguration(mWindow, s, nullptr); });|' $(@D)/es-app/src/guis/GuiMenu.cpp
+endef
+
 define BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 	cp $(STAGING_DIR)/usr/share/batocera-es-system/es_external_translations.h \
 	    $(STAGING_DIR)/usr/share/batocera-es-system/es_keys_translations.h $(@D)/es-app/src
@@ -244,6 +262,7 @@ endef
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_RPI_FIXUP
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_HOME_MENU_TITLE
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_STREMIO_MENU
+BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_THEME_LOCK
 BATOCERA_EMULATIONSTATION_PRE_CONFIGURE_HOOKS += BATOCERA_EMULATIONSTATION_EXTERNAL_POS
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_RESOURCES
 BATOCERA_EMULATIONSTATION_POST_INSTALL_TARGET_HOOKS += BATOCERA_EMULATIONSTATION_BOOT
