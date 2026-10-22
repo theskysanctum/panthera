@@ -32,7 +32,6 @@ pcengine
 pcenginecd
 supergrafx
 pcfx
-scummvm
 devilutionx
 neogeo
 neogeocd
@@ -112,7 +111,6 @@ library
 model3
 mugen
 ikemen
-flash
 xbox
 appman
 supervision

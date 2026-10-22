@@ -225,6 +225,52 @@ dos:
 
      Para mais informações: https://wiki.batocera.org/systems:dos
 
+scummvm:
+  name:       ScummVM
+  manufacturer: LucasArts
+  release: 1987
+  hardware: computer
+  platform:   scummvm
+  comment_en: |
+    Put scummvm games in this folder.
+
+    For each game, you must create a file named from the short name of the game and with the extension ".scummvm"
+
+    Short game names can be found at http://scummvm.org/compatibility/
+    For example, for "Broken Sword" create the file "Broken Sword/sword1.scummvm"
+
+    If you wish to use Midi ROM's i.e. the MT-32 synth, put you files in /userdata/bios/scummvm/extra
+
+    For more info: https://wiki.batocera.org/systems:scummvm
+  comment_fr: |
+    Placez les dossiers de jeux scummvm dans ce dossier.
+
+    Pour chaque jeu, dans son repertoire, vous devez creer un fichier portant le nom court du jeu et finissant par ".scummvm"
+
+    Vous trouverez les noms courts a l'adresse : http://scummvm.org/compatibility/
+    Par exemple pour "Les Chevaliers de Baphomet" creez le fichier "Les Chevaliers de Baphomet/sword1.scummvm"
+
+    Si vous souhaitez utiliser des Midi ROM, c'est-à-dire le synthé MT-32, mettez vos fichiers dans /userdata/bios/scummvm/extra
+
+    Trouvez la documentation ici: https://wiki.batocera.org/systems:scummvm
+  comment_br: |
+    Coloque os diretóios dos jogos scummvm nesta pasta.
+
+    Para cada jogo, você deve criar um arquivo com o nome abreviado do jogo e com a extensão ".scummvm"
+
+    Nomes curtos de jogos podem ser encontrados em http://scummvm.org/compatibility/
+    Por exemplo, para "Broken Sword" crie o arquivo "Broken Sword/sword1.scummvm"
+
+    Se você deseja usar Midi ROM, ou seja, o sintetizador MT-32, coloque seus arquivos em /userdata/bios/scummvm/extra
+
+    Para mais informações: https://wiki.batocera.org/systems:scummvm
+
+flash:
+  name:       Flash Player
+  manufacturer: Adobe
+  release: 1996
+  hardware: port
+
 fbneo:
   name:       Final Burn Neo
   manufacturer: Arcade
@@ -563,6 +609,55 @@ container_apps:
           como um arquivo ".capp":
           image: desktop-apps:latest   # a imagem OCI a ser executada
           cmd: ["/usr/bin/brave-browser", "--app=https://example.com"]
+
+web:
+  name: Web
+  manufacturer:
+  release:
+  hardware:
+  platform: pc
+  group: ports
+  file_extensions: [capp]
+  comment_en: |
+          Websites, run the same way as Desktop Apps (container_apps) - a
+          separate folder so website shortcuts don't get mixed in with
+          browser-based desktop apps. Create a shortcut with a text editor
+          as a ".capp" file:
+          image: desktop-apps:latest   # the OCI image to run
+          cmd: ["/usr/bin/brave-browser", "--app=https://example.com"]
+  comment_br: |
+          Sites, executados da mesma forma que Desktop Apps (container_apps) -
+          uma pasta separada para que os atalhos de sites não se misturem com
+          os aplicativos de desktop baseados em navegador. Crie um atalho com
+          um editor de texto como um arquivo ".capp":
+          image: desktop-apps:latest   # a imagem OCI a ser executada
+          cmd: ["/usr/bin/brave-browser", "--app=https://example.com"]
+
+streaming:
+  name: Streaming
+  manufacturer:
+  release:
+  hardware:
+  platform: pc
+  group: ports
+  file_extensions: [capp]
+  comment_en: |
+          Streaming services (Netflix, Hulu, etc), run the same way as
+          Desktop Apps (container_apps), in Brave's --kiosk mode. Widevine
+          DRM is preseeded/enabled in the shared container image, so DRM
+          playback works without any settings-page interaction. Create a
+          shortcut with a text editor as a ".capp" file:
+          image: desktop-apps:latest   # the OCI image to run
+          cmd: ["/usr/bin/brave-browser", "--kiosk", "https://netflix.com"]
+  comment_br: |
+          Serviços de streaming (Netflix, Hulu, etc), executados da mesma
+          forma que Desktop Apps (container_apps), no modo --kiosk do Brave.
+          O DRM Widevine já vem habilitado na imagem do contêiner
+          compartilhado, então a reprodução de conteúdo com DRM funciona sem
+          nenhuma interação na página de configurações. Crie um atalho com um
+          editor de texto como um arquivo ".capp":
+          image: desktop-apps:latest   # a imagem OCI a ser executada
+          cmd: ["/usr/bin/brave-browser", "--kiosk", "https://netflix.com"]
 
 psvita:
   name: PlayStation Vita

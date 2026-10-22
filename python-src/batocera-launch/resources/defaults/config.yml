@@ -166,6 +166,12 @@ commanderx16:
 container_apps:
   emulator: container_apps
   core:     container_apps
+web:
+  emulator: container_apps
+  core:     container_apps
+streaming:
+  emulator: container_apps
+  core:     container_apps
 corsixth:
   emulator: corsixth
   core:     corsixth
